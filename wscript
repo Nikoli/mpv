@@ -1,3 +1,4 @@
+# vim: syntax=python
 # This file is not 80 wrapped yet please do not do that!
 
 def options(ctx):
