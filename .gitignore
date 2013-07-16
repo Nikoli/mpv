@@ -25,3 +25,7 @@
 /DOCS/man/*/mpv.out
 /DOCS/man/*/mpv.pdf
 /DOCS/man/*/mpv.toc
+
+/build
+/.waf-*
+/.lock-waf_*
