@@ -117,6 +117,7 @@ def options(ctx):
 def configure(ctx):
     ctx.load('compiler_c')
 
+    # XXX: remove this hack
     from os import environ
     environ["PKG_CONFIG_PATH"] = "/mnt/devel/mpv/prefix/lib/pkgconfig/"
 
