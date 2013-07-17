@@ -124,10 +124,6 @@ def configure(ctx):
     # Check for pkgconfig + version
     ctx.check_cfg(atleast_pkgconfig_version='0.22')
 
-    # XXX: remove this hack
-    from os import environ
-    environ["PKG_CONFIG_PATH"] = "/mnt/devel/mpv/prefix/lib/pkgconfig/"
-
     ctx.env.DEFINES = ["_ISOC99_SOURCE", "_BSD_SOURCE"]
     ctx.env.CFLAGS = ["-std=c99", "-Wall", "-Wno-switch", "-Wpointer-arith", "-Wundef", "-Wno-pointer-sign", "-Wmissing-prototypes", "-Werror=implicit-function-declaration"]
 
