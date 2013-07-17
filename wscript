@@ -3,7 +3,6 @@
 
 def options(ctx):
     ctx.load('compiler_c')
-    ctx.load('compiler_cxx')
 
     Auto = None
     grp = ctx.add_option_group("General")
@@ -121,7 +120,6 @@ def options(ctx):
 
 def configure(ctx):
     ctx.load('compiler_c')
-    ctx.load('compiler_cxx')
 
     # HACK!
     ctx.env.CC = "/usr/bin/clang"
