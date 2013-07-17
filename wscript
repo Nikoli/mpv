@@ -89,7 +89,6 @@ def options(ctx):
 
     grp = ctx.add_option_group("Miscellanous")
     grp.add_option("--enable-cross-compile",  action="store_true",  default=False,         help="enable cross-compilation [disable]")
-    grp.add_option("--cc",               type="string",             default="gcc",         help="C compiler to build mpv [gcc]")
     grp.add_option("--pkg-config",       type="string",             default="pkg-config",  help="pkg-config to find some libraries [pkg-config]")
     grp.add_option("--windres",          type="string",             default="windres",     help="windres to build mpv [windres]")
     grp.add_option("--target",           type="string",             default='',            help="target platform (i386-linux, arm-linux, etc)")
@@ -117,9 +116,6 @@ def options(ctx):
 
 def configure(ctx):
     ctx.load('compiler_c')
-
-    # HACK!
-    ctx.env.CC = "/usr/bin/clang"
 
     from os import environ
     environ["PKG_CONFIG_PATH"] = "/mnt/devel/mpv/prefix/lib/pkgconfig/"
