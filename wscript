@@ -89,7 +89,7 @@ def options(ctx):
 
     grp = ctx.add_option_group("Miscellanous")
     grp.add_option("--enable-cross-compile",  action="store_true",  default=False,         help="enable cross-compilation [disable]")
-    grp.add_option("--pkg-config",       type="string",             default="pkg-config",  help="pkg-config to find some libraries [pkg-config]")
+    grp.add_option("--pkg-config",       type="string",             default="",  dest="PKGCONFIG", help="pkg-config to find some libraries [pkg-config]")
     grp.add_option("--windres",          type="string",             default="windres",     help="windres to build mpv [windres]")
     grp.add_option("--target",           type="string",             default='',            help="target platform (i386-linux, arm-linux, etc)")
     grp.add_option("--enable-static",    action="store_true",       default=Auto,          help="build a statically linked binary")
@@ -116,6 +116,13 @@ def options(ctx):
 
 def configure(ctx):
     ctx.load('compiler_c')
+
+    # Set PKGCONFIG location if --pkg-config is supplied (XXX: do we need this?)
+    if ctx.options.PKGCONFIG:
+        ctx.env.PKGCONFIG = ctx.options.PKGCONFIG
+
+    # Check for pkgconfig + version
+    ctx.check_cfg(atleast_pkgconfig_version='0.22')
 
     # XXX: remove this hack
     from os import environ
