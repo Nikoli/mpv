@@ -187,6 +187,7 @@ def configure(ctx):
     config_map = {
         "HAVE_LIBAVRESAMPLE": "CONFIG_LIBAVRESAMPLE",
         "HAVE_LIBSWRESAMPLE": "CONFIG_LIBSWRESAMPLE",
+        "HAVE_LIBASS":        "CONFIG_ASS",
     }
 
     for key in config_map:
@@ -225,8 +226,8 @@ def configure(ctx):
 
     # XXX: hack
     # There is a proper way of doing this for now it's a hack until we collect all the required libraries.
-    ctx.env.MPV_LIB = ctx.env.LIB_LIBAVFORMAT + ctx.env.LIB_LIBAVUTIL + ctx.env.LIB_LIBAVCODEC + ctx.env.LIB_LIBAVRESAMPLE + ctx.env.LIB_LIBSWSCALE
-    ctx.env.MPV_LIBPATH = ctx.env.LIBPATH_LIBAVFORMAT + ctx.env.LIBPATH_LIBAVUTIL + ctx.env.LIBPATH_LIBAVCODEC + ctx.env.LIBPATH_LIBAVRESAMPLE + ctx.env.LIBPATH_LIBSWSCALE
+    ctx.env.MPV_LIB = ctx.env.LIB_LIBAVFORMAT + ctx.env.LIB_LIBAVUTIL + ctx.env.LIB_LIBAVCODEC + ctx.env.LIB_LIBAVRESAMPLE + ctx.env.LIB_LIBSWSCALE + ctx.env.LIB_LIBASS
+    ctx.env.MPV_LIBPATH = ctx.env.LIBPATH_LIBAVFORMAT + ctx.env.LIBPATH_LIBAVUTIL + ctx.env.LIBPATH_LIBAVCODEC + ctx.env.LIBPATH_LIBAVRESAMPLE + ctx.env.LIBPATH_LIBSWSCALE + ctx.env.LIBPATH_LIBASS
 
     # Convenience functions
     from waflib.Logs import pprint
@@ -382,7 +383,7 @@ def build(ctx):
         #- "demux/parse_es.c",
         #- "demux/video.c"
         "demux/demux_subreader.c",
-        #- "demux/demux_libass.c",
+        "demux/demux_libass.c",
         "demux/demux_raw.c"
     ]
 
@@ -412,22 +413,21 @@ def build(ctx):
 
 
     source = [
+        "sub/ass_mp.c",
         "sub/dec_sub.c",
         "sub/draw_bmp.c",
-        #- "sub/find_sub.c",
         "sub/find_subfiles.c",
         "sub/img_convert.c",
+        "sub/sd_ass.c",
         "sub/sd_lavc.c",
-        "sub/spudec.c",
-        "sub/sub.c",
-        #- "sub/subassconvert.c",
-        #- "sub/subreader.c",
+        "sub/sd_lavc_conv.c",
+        "sub/sd_lavf_srt.c",
         "sub/sd_microdvd.c",
         "sub/sd_movtext.c",
-        "sub/sd_lavf_srt.c",
-        "sub/sd_lavc_conv.c",
         "sub/sd_spu.c",
-        "sub/sd_srt.c"
+        "sub/sd_srt.c",
+        "sub/spudec.c",
+        "sub/sub.c",
     ]
 
     ctx.objects(
