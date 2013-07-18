@@ -336,7 +336,7 @@ def build(ctx):
     ctx(
         rule    = "${BIN_PERL} %s/TOOLS/file2string.pl ${SRC} > ${TGT}" % ctx.srcnode.abspath(),
         source  = "etc/input.conf",
-        target  = "input_conf.h",
+        target  = "core/input/input_conf.h",
         name    = "gen_input_conf",
         before  = ("c",)
     )
