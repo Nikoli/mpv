@@ -1,6 +1,10 @@
 # vi: ft=python
 # This file is not 80 wrapped yet please do not do that!
 
+import sys, os
+sys.path.insert(0, os.path.join(os.getcwd(), 'waftools'))
+from msg import fmsg, msg, msg_setting
+
 def options(ctx):
     ctx.load('compiler_c')
 
@@ -144,6 +148,8 @@ def configure(ctx):
     if "HAVE_SYS_SOCKET_H" in ctx.env.define_key:
         ctx.check_cc(type_name='socklen_t', header_name="sys/socket.h", mandatory=False)
 
+    ctx.load('resamplers')
+
     # Check for pkg-config libraries, format is ([package name => version], Whether it is manditory).
     pkg_config = {
         "vdpau":           (["vdpau >= 0.2"], False),
@@ -167,8 +173,6 @@ def configure(ctx):
         "libmpg123":       (["libmpg123 >= 1.2.0"], False),
         "libbs2b":         (["libbs2b"], False),
         "lcms2":           (["lcms2"], False),
-        "libavresample":   (["libavresample >= 1.0.0"], False),
-        "libswresample":   (["libswresample >= 0.15.100"], False),
         "libavfilter":     (["libavfilter >= 3.17.0"], False),
         "libavdevice":     (["libavdevice >= 54.0.0"], False),
         "libpostproc":     (["libpostproc >= 52.0.0"], False),
@@ -226,17 +230,8 @@ def configure(ctx):
 
     # XXX: hack
     # There is a proper way of doing this for now it's a hack until we collect all the required libraries.
-    ctx.env.MPV_LIB = ctx.env.LIB_LIBAVFORMAT + ctx.env.LIB_LIBAVUTIL + ctx.env.LIB_LIBAVCODEC + ctx.env.LIB_LIBAVRESAMPLE + ctx.env.LIB_LIBSWSCALE + ctx.env.LIB_LIBASS
-    ctx.env.MPV_LIBPATH = ctx.env.LIBPATH_LIBAVFORMAT + ctx.env.LIBPATH_LIBAVUTIL + ctx.env.LIBPATH_LIBAVCODEC + ctx.env.LIBPATH_LIBAVRESAMPLE + ctx.env.LIBPATH_LIBSWSCALE + ctx.env.LIBPATH_LIBASS
-
-    # Convenience functions
-    from waflib.Logs import pprint
-    def msg(str):
-        pprint("YELLOW", str)
-
-    def msg_setting(name, val):
-        pprint("NORMAL", "  %-30s: " % name, sep="")
-        pprint("YELLOW", val)
+    ctx.env.MPV_LIB += ctx.env.LIB_LIBAVFORMAT + ctx.env.LIB_LIBAVUTIL + ctx.env.LIB_LIBAVCODEC + ctx.env.LIB_LIBSWSCALE + ctx.env.LIB_LIBASS
+    ctx.env.MPV_LIBPATH += ctx.env.LIBPATH_LIBAVFORMAT + ctx.env.LIBPATH_LIBAVUTIL + ctx.env.LIBPATH_LIBAVCODEC + ctx.env.LIBPATH_LIBSWSCALE + ctx.env.LIBPATH_LIBASS
 
     # Print configuration to user
     msg("COMPILER SETTINGS")

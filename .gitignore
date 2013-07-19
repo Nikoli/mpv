@@ -2,6 +2,7 @@
 *.a
 *.d
 *.exe
+*.pyc
 .depend
 
 /config.h
