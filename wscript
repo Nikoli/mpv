@@ -242,7 +242,6 @@ def build(ctx):
     env = ctx.env
 
     source = [
-        "audio/decode/ad.c",
         "audio/decode/ad_lavc.c",
         "audio/decode/ad_spdif.c",
         "audio/decode/dec_audio.c",
