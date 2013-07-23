@@ -148,7 +148,7 @@ def configure(ctx):
     if "HAVE_SYS_SOCKET_H" in ctx.env.define_key:
         ctx.check_cc(type_name='socklen_t', header_name="sys/socket.h", mandatory=False)
 
-    ctx.load('resamplers')
+    ctx.load('libav')
 
     # Check for pkg-config libraries, format is ([package name => version], Whether it is manditory).
     pkg_config = {
@@ -173,19 +173,11 @@ def configure(ctx):
         "libmpg123":       (["libmpg123 >= 1.2.0"], False),
         "libbs2b":         (["libbs2b"], False),
         "lcms2":           (["lcms2"], False),
-        "libavfilter":     (["libavfilter >= 3.17.0"], False),
-        "libavdevice":     (["libavdevice >= 54.0.0"], False),
-        "libpostproc":     (["libpostproc >= 52.0.0"], False),
-        "libavutil":       (["libavutil > 51.73.0"], False),
-        "libavcodec":      (["libavcodec > 54.34.0"], False),
-        "libavformat":     (["libavformat > 54.19.0"], False),
-        "libswscale":      (["libswscale >= 2.0.0"], False),
     }
 
     for pkg in sorted(pkg_config):
         args, mandatory = pkg_config[pkg]
         ctx.check_cfg(package=pkg, args=args + ["--libs", "--cflags"], msg="Checking for %s" % " ".join(args), mandatory=mandatory)
-
 
     # Map internal mpv defines to waf internal, eventually these will be synched by replacing mpv source with waf-internal.
     config_map = {
@@ -230,8 +222,8 @@ def configure(ctx):
 
     # XXX: hack
     # There is a proper way of doing this for now it's a hack until we collect all the required libraries.
-    ctx.env.MPV_LIB += ctx.env.LIB_LIBAVFORMAT + ctx.env.LIB_LIBAVUTIL + ctx.env.LIB_LIBAVCODEC + ctx.env.LIB_LIBSWSCALE + ctx.env.LIB_LIBASS
-    ctx.env.MPV_LIBPATH += ctx.env.LIBPATH_LIBAVFORMAT + ctx.env.LIBPATH_LIBAVUTIL + ctx.env.LIBPATH_LIBAVCODEC + ctx.env.LIBPATH_LIBSWSCALE + ctx.env.LIBPATH_LIBASS
+    ctx.env.MPV_LIB = ctx.env.LIB_LIBAVFORMAT + ctx.env.LIB_LIBAVUTIL + ctx.env.LIB_LIBAVCODEC + ctx.env.LIB_LIBSWSCALE + ctx.env.LIB_LIBAVRESAMPLE + ctx.env.LIB_LIBSWRESAMPLE + ctx.env.LIB_LIBASS
+    ctx.env.MPV_LIBPATH += ctx.env.LIBPATH_LIBAVFORMAT + ctx.env.LIBPATH_LIBAVUTIL + ctx.env.LIBPATH_LIBAVCODEC + ctx.env.LIBPATH_LIBSWSCALE + ctx.env.LIBPATH_LIBAVRESAMPLE + ctx.env.LIBPATH_LIBSWRESAMPLE + ctx.env.LIBPATH_LIBASS
 
     # Print configuration to user
     msg("COMPILER SETTINGS")
