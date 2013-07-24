@@ -211,8 +211,8 @@ def configure(ctx):
 
     # XXX: hack
     # There is a proper way of doing this for now it's a hack until we collect all the required libraries.
-    ctx.env.MPV_LIB = ctx.env.LIB_LIBAVFORMAT + ctx.env.LIB_LIBAVUTIL + ctx.env.LIB_LIBAVCODEC + ctx.env.LIB_LIBSWSCALE + ctx.env.LIB_LIBAVRESAMPLE + ctx.env.LIB_LIBSWRESAMPLE + ctx.env.LIB_LIBASS
-    ctx.env.MPV_LIBPATH += ctx.env.LIBPATH_LIBAVFORMAT + ctx.env.LIBPATH_LIBAVUTIL + ctx.env.LIBPATH_LIBAVCODEC + ctx.env.LIBPATH_LIBSWSCALE + ctx.env.LIBPATH_LIBAVRESAMPLE + ctx.env.LIBPATH_LIBSWRESAMPLE + ctx.env.LIBPATH_LIBASS
+    ctx.env.MPV_LIB = ctx.env.LIB_LIBAVFORMAT + ctx.env.LIB_LIBAVUTIL + ctx.env.LIB_LIBAVCODEC + ctx.env.LIB_LIBSWSCALE + ctx.env.LIB_LIBAVRESAMPLE + ctx.env.LIB_LIBSWRESAMPLE + ctx.env.LIB_LIBAVDEVICE + ctx.env.LIB_LIBAVFILTER + ctx.env.LIB_LIBASS
+    ctx.env.MPV_LIBPATH += ctx.env.LIBPATH_LIBAVFORMAT + ctx.env.LIBPATH_LIBAVUTIL + ctx.env.LIBPATH_LIBAVCODEC + ctx.env.LIBPATH_LIBSWSCALE + ctx.env.LIBPATH_LIBAVRESAMPLE + ctx.env.LIBPATH_LIBSWRESAMPLE + ctx.env.LIBPATH_LIBAVDEVICE + ctx.env.LIBPATH_LIBAVFILTER + ctx.env.LIBPATH_LIBASS
 
     # Print configuration to user
     msg("COMPILER SETTINGS")

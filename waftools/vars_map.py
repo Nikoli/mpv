@@ -4,6 +4,8 @@ def configure(ctx):
     config_map = {
         "HAVE_LIBAVRESAMPLE": "CONFIG_LIBAVRESAMPLE",
         "HAVE_LIBSWRESAMPLE": "CONFIG_LIBSWRESAMPLE",
+        "HAVE_LIBAVDEVICE":   "CONFIG_LIBAVDEVICE",
+        "HAVE_LIBAVFILTER":   "CONFIG_LIBAVFILTER",
         "HAVE_LIBASS":        "CONFIG_ASS",
     }
 
