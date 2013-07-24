@@ -4,6 +4,7 @@
 import sys, os
 sys.path.insert(0, os.path.join(os.getcwd(), 'waftools'))
 from msg import fmsg, msg, msg_setting
+from pkgconfig import pkgconfig_check_list
 
 def options(ctx):
     ctx.load('compiler_c')
@@ -150,34 +151,31 @@ def configure(ctx):
 
     ctx.load('libav')
 
-    # Check for pkg-config libraries, format is ([package name => version], Whether it is manditory).
-    pkg_config = {
-        "vdpau":           (["vdpau >= 0.2"], False),
-        "libquvi":         (["libquvi >= 0.4.1"], False),
-        "caca":            (["caca >= 0.99.beta18"], False),
-        "sdl2":            (["sdl2"], False),
-        "sdl":             (["sdl"], False),
-        "wayland-client":  (["wayland-client >= 1.0.0"], False),
-        "wayland-egl":     (["wayland-egl >= 9.0.0"], False),
-        "wayland-cursor":  (["wayland-cursor >= 1.0.0"], False),
-        "xkbcommon":       (["xkbcommon >= 0.2.0"], False),
-        "libpulse":        (["libpulse >= 0.9"], False),
-        "portaudio":       (["portaudio-2.0 >= 19"], False),
-        "jack":            (["jack"], False),
-        "openal":          (["openal >= 1.13"], False),
-        "alsa":            (["alsa >= 1.0.9"], False),
-        "libbluray":       (["libbluray >= 0.2.1"], False),
-        "dvdread":         (["dvdread >= 4.2.0"], False),
-        "libcdio_paranoia":(["libcdio_paranoia"], False),
-        "libass":          (["libass"], False),
-        "libmpg123":       (["libmpg123 >= 1.2.0"], False),
-        "libbs2b":         (["libbs2b"], False),
-        "lcms2":           (["lcms2"], False),
+    pkg_config_packages = {
+        "vdpau":           (">= 0.2",         False),
+        "libquvi":         (">= 0.4.1",       False),
+        "caca":            (">= 0.99.beta18", False),
+        "sdl2":            (None,             False),
+        "sdl":             (None,             False),
+        "wayland-client":  (">= 1.0.0",       False),
+        "wayland-egl":     (">= 9.0.0",       False),
+        "wayland-cursor":  (">= 1.0.0",       False),
+        "xkbcommon":       (">= 0.2.0",       False),
+        "libpulse":        (">= 0.9",         False),
+        "portaudio-2.0":   (">= 19",          False),
+        "jack":            (None,             False),
+        "openal":          (">= 1.13",        False),
+        "alsa":            (">= 1.0.9",       False),
+        "libbluray":       (">= 0.2.1",       False),
+        "dvdread":         (">= 4.2.0",       False),
+        "libcdio_paranoia":(None,             False),
+        "libass":          (None,             False),
+        "libmpg123":       (">= 1.2.0",       False),
+        "libbs2b":         (None ,            False),
+        "lcms2":           (None,             False),
     }
 
-    for pkg in sorted(pkg_config):
-        args, mandatory = pkg_config[pkg]
-        ctx.check_cfg(package=pkg, args=args + ["--libs", "--cflags"], msg="Checking for %s" % " ".join(args), mandatory=mandatory)
+    pkgconfig_check_list(ctx, pkg_config_packages)
 
     # Map internal mpv defines to waf internal, eventually these will be synched by replacing mpv source with waf-internal.
     config_map = {

@@ -1,7 +1,10 @@
 from msg import fmsg
 
 def pkgconfig_repr(name, version):
-    return " ".join([name, version])
+    if version:
+        return " ".join([name, version])
+    else:
+        return name
 
 def pkgconfig_check(ctx, package, version, mandatory):
     args = [pkgconfig_repr(package, version)]
