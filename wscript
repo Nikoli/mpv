@@ -2,7 +2,7 @@
 
 import sys, os
 sys.path.insert(0, os.path.join(os.getcwd(), 'waftools'))
-from waftools.checks import check_pkg_config
+from waftools.checks import check_pkg_config, check_pkg_config_multiple
 
 audio_output_features = {
     'portaudio': {
@@ -25,8 +25,10 @@ video_output_features = {
     },
     'vaapi': {
         'desc': 'VAAPI acceleration',
-        'deps': [ 'os_linux', 'x11' ],
-        'func': check_pkg_config('libva', '>= 0.32.0'),
+        # 'deps': [ 'os_linux', 'x11' ],
+        'func': check_pkg_config_multiple(
+            # 'vaapi', 'libva', '>= 0.32.0', 'libva-x11', '>= 0.32.0'),
+            'libass', 'libass'),
     },
     'vda': {
         'desc': 'VDA acceleration',
