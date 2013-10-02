@@ -2,13 +2,18 @@
 
 import sys, os
 sys.path.insert(0, os.path.join(os.getcwd(), 'waftools'))
-from waftools.checks import check_pkg_config, check_cc
+from waftools.checks import check_pkg_config, check_cc, check_statement
 
 main_dependencies = [
     {
         'name': '_lm',
         'desc': '-lm',
         'func': check_cc(lib='m')
+    },
+    {
+        'name': 'nanosleep',
+        'desc': 'nanosleep',
+        'func': check_statement('time.h', 'nanosleep(0,0)')
     }
 ]
 

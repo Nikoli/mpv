@@ -3,11 +3,24 @@ any_version = None
 def even(n):
     return n % 2 == 0
 
+def default_check_cc_options(dependency_identifier, kw={}):
+    kw['uselib_store'] = dependency_identifier
+    kw['mandatory'] = False
+    return kw
+
+def check_statement(header, statement):
+    def fn(ctx, dependency_identifier):
+        kw = default_check_cc_options(dependency_identifier)
+        kw['fragment'] = """
+            #include <{0}>
+            int main(int argc, char **argv)
+            {{ {1}; return 0; }} """.format(header, statement)
+        return ctx.check_cc(**kw)
+    return fn
+
 def check_cc(**kw):
     def fn(ctx, dependency_identifier):
-        kw['uselib_store'] = dependency_identifier
-        kw['mandatory'] = False
-        # print kw
+        default_check_cc_options(dependency_identifier, kw)
         return ctx.check_cc(**kw)
     return fn
 
