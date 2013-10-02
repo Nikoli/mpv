@@ -2,7 +2,15 @@
 
 import sys, os
 sys.path.insert(0, os.path.join(os.getcwd(), 'waftools'))
-from waftools.checks import check_pkg_config
+from waftools.checks import check_pkg_config, check_cc
+
+main_dependencies = [
+    {
+        'name': '_lm',
+        'desc': '-lm',
+        'func': check_cc(lib='m')
+    }
+]
 
 audio_output_features = [
     {
@@ -56,6 +64,7 @@ def options(opt):
 def configure(ctx):
     ctx.load('compiler_c')
     ctx.load('dependencies')
+    ctx.parse_dependencies(main_dependencies)
     ctx.parse_dependencies(audio_output_features)
     ctx.parse_dependencies(video_output_features)
 
