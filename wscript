@@ -4,42 +4,48 @@ import sys, os
 sys.path.insert(0, os.path.join(os.getcwd(), 'waftools'))
 from waftools.checks import check_pkg_config
 
-audio_output_features = {
-    'portaudio': {
+audio_output_features = [
+    {
+        'name': 'portaudio',
         'desc': 'PortAudio audio output',
         'deps': [ 'pthreads' ],
         'func': check_pkg_config('portaudio-2.0', '>= 19'),
     },
-    'openal': {
+    {
+        'name': 'openal',
         'desc': 'OpenAL audio output',
         'func': check_pkg_config('openal', '>= 1.13'),
         'default': 'disable'
     }
-}
+]
 
-video_output_features = {
-    'vdpau': {
+video_output_features = [
+    {
+        'name': 'vdpau',
         'desc': 'VDPAU acceleration',
         'deps': [ 'os_linux', 'x11' ],
         'func': check_pkg_config('vdpau', '>= 0.2'),
     },
-    'vaapi': {
+    {
+        'name': 'vaapi',
         'desc': 'VAAPI acceleration',
         'deps': [ 'os_linux', 'x11', 'dl' ],
         'func': check_pkg_config(
             'libva', '>= 0.32.0', 'libva-x11', '>= 0.32.0'),
     },
-    'vaapi-vpp': {
+    {
+        'name': 'vaapi-vpp',
         'desc': 'VAAPI VPP',
         'deps': [ 'vaapi' ],
         'func': check_pkg_config('libva', '>= 0.34.0'),
     },
-    'vda': {
+    {
+        'name': 'vda',
         'desc': 'VDA acceleration',
         'deps': [ 'os_mac', 'cocoa' ],
         'func': check_pkg_config('asd'),
     }
-}
+]
 
 def options(opt):
     opt.load('compiler_c')

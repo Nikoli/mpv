@@ -7,10 +7,10 @@ class DependencyError(Exception):
     pass
 
 class Dependency(object):
-    def __init__(self, ctx, satisfied_deps, dep_tuple):
+    def __init__(self, ctx, satisfied_deps, dependency):
         self.ctx = ctx
         self.satisfied_deps = satisfied_deps
-        self.identifier, self.attributes = dep_tuple
+        self.identifier, self.attributes = dependency['name'], dependency
 
     def check(self):
         self.ctx.start_msg('Checking for {0}'.format(self.attributes['desc']))
@@ -67,4 +67,4 @@ def check_dependency(ctx, dependency):
 
 @conf
 def parse_dependencies(ctx, dependencies):
-    [check_dependency(ctx, dependency) for dependency in dependencies.items()]
+    [check_dependency(ctx, dependency) for dependency in dependencies]

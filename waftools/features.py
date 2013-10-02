@@ -3,7 +3,7 @@ from waflib.Options import OptionsContext
 class Feature(object):
     def __init__(self, group, feature):
         self.group     = group
-        self.identifier, self.attributes = feature
+        self.identifier, self.attributes = feature['name'], feature
 
     def add_options(self):
         [self.add_option(option_rule) for option_rule in self.option_rules()]
@@ -51,6 +51,6 @@ def add_feature(group, feature):
 
 def parse_features(opt, group, features):
     group = opt.add_option_group(group)
-    [add_feature(group, feature) for feature in features.items()]
+    [add_feature(group, feature) for feature in features]
 
 OptionsContext.parse_features = parse_features
