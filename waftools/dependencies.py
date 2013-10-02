@@ -67,5 +67,4 @@ def check_dependency(ctx, dependency):
 
 @conf
 def parse_dependencies(ctx, dependencies):
-    [check_dependency(ctx, dependency) for dependency \
-        in reversed(dependencies.items())]
+    [check_dependency(ctx, dependency) for dependency in dependencies.items()]

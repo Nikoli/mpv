@@ -51,6 +51,6 @@ def add_feature(group, feature):
 
 def parse_features(opt, group, features):
     group = opt.add_option_group(group)
-    [add_feature(group, feature) for feature in reversed(features.items())]
+    [add_feature(group, feature) for feature in features.items()]
 
 OptionsContext.parse_features = parse_features

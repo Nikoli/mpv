@@ -25,9 +25,14 @@ video_output_features = {
     },
     'vaapi': {
         'desc': 'VAAPI acceleration',
-        'deps': [ 'os_linux', 'x11' ],
+        'deps': [ 'os_linux', 'x11', 'dl' ],
         'func': check_pkg_config(
             'libva', '>= 0.32.0', 'libva-x11', '>= 0.32.0'),
+    },
+    'vaapi-vpp': {
+        'desc': 'VAAPI VPP',
+        'deps': [ 'vaapi' ],
+        'func': check_pkg_config('libva', '>= 0.34.0'),
     },
     'vda': {
         'desc': 'VDA acceleration',
