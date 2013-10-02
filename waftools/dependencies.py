@@ -36,7 +36,7 @@ class Dependency(object):
                 raise DependencyError
 
     def check_autodetect_func(self):
-        if self.attributes['func'](self.ctx):
+        if self.attributes['func'](self.ctx, self.identifier):
             self.success(self.identifier)
         else:
             self.fail()
