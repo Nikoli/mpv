@@ -47,7 +47,7 @@ video_output_features = [
     {
         'name': 'vaapi',
         'desc': 'VAAPI acceleration',
-        'deps': [ 'os_linux', 'x11', 'dl' ],
+        'deps': [ 'os_linux', 'x11', 'libdl' ],
         'func': check_pkg_config(
             'libva', '>= 0.32.0', 'libva-x11', '>= 0.32.0'),
     },
