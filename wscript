@@ -44,7 +44,27 @@ main_dependencies = [
         'deps_neg': ['terminfo'],
         'func': check_libs(['ncurses', 'tinfo', 'termcap'],
             check_statement('term.h', 'tgetent(0, 0)'))
-    },
+    }, {
+        'name': 'termios',
+        'desc': 'termios',
+        'func': check_headers('termios.h', 'sys/termios.h')
+    }, {
+        'name': 'shm',
+        'desc': 'shm',
+        'func': check_statement('sys/shm.h',
+            'shmget(0, 0, 0); shmat(0, 0, 0); shmctl(0, 0, 0)')
+    }, {
+        # XXX : posix select / audio select
+        'name': 'glob',
+        'desc': 'glob()',
+        'func': check_statement('glob.h', 'glob("filename", 0, 0, 0)')
+    }, {
+        'name': 'glob_replacement',
+        'desc': 'glob() win32 replacement',
+        'deps_neg': [ 'glob' ],
+        'deps': [ 'os_win32' ],
+        'func': check_true
+    }
 ]
 
 audio_output_features = [
