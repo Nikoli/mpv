@@ -2,24 +2,33 @@
 
 import sys, os
 sys.path.insert(0, os.path.join(os.getcwd(), 'waftools'))
-from waftools.checks import check_pkg_config, check_cc, check_statement, check_libs
+from waftools.checks import *
 
 main_dependencies = [
     {
         'name': '_lm',
         'desc': '-lm',
         'func': check_cc(lib='m')
-    },
-    {
+    }, {
         'name': 'nanosleep',
         'desc': 'nanosleep',
         'func': check_statement('time.h', 'nanosleep(0,0)')
-    },
-    {
+    }, {
         'name': 'libdl',
         'desc': 'dynamic loader',
         'func': check_libs(['-ldl'], check_statement('dlfcn.h', 'dlopen("", 0)'))
-    }
+    }, {
+  # XXX: pthreads, lrt, iconv, rpath
+        'name': 'stream_cache',
+        'desc': 'stream cache',
+        'deps': [ 'pthreads' ],
+        'func': check_true
+    }, {
+        'name': 'soundcard_h',
+        'desc': 'soundcard header',
+        'deps': ['os_linux', 'pthreads' ],
+        'func': check_headers('soundcard.h', 'sys/soundcard.h')
+    },
 ]
 
 audio_output_features = [

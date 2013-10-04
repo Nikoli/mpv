@@ -1,3 +1,7 @@
+__all__ = [
+    "check_pkg_config", "check_cc", "check_statement", "check_libs",
+    "check_headers", "check_true", "any_version"]
+
 any_version = None
 
 def even(n):
@@ -38,7 +42,6 @@ def check_cc(**kw_ext):
         return ctx.check_cc(**options)
     return fn
 
-
 def check_pkg_config(*args):
     def fn(ctx, dependency_identifier):
         argsl    = list(args)
@@ -49,3 +52,17 @@ def check_pkg_config(*args):
                              uselib_store=dependency_identifier,
                              mandatory=False)
     return fn
+
+def check_headers(*headers):
+    def fn(ctx, dependency_identifier):
+        for header in headers:
+            defaults = {'header_name': header, 'features': 'c cprogram'}
+            options  = merge_options(dependency_identifier, defaults)
+            if ctx.check(**options):
+                return True
+        return False
+    return fn
+
+def check_true(ctx, dependency_identifier):
+    return True
+
