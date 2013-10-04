@@ -16,7 +16,7 @@ main_dependencies = [
     }, {
         'name': 'libdl',
         'desc': 'dynamic loader',
-        'func': check_libs(['-ldl'], check_statement('dlfcn.h', 'dlopen("", 0)'))
+        'func': check_libs(['dl'], check_statement('dlfcn.h', 'dlopen("", 0)'))
     }, {
   # XXX: pthreads, lrt, iconv, rpath
         'name': 'stream_cache',
@@ -25,9 +25,25 @@ main_dependencies = [
         'func': check_true
     }, {
         'name': 'soundcard_h',
-        'desc': 'soundcard header',
-        'deps': ['os_linux', 'pthreads' ],
+        'desc': 'soundcard.h',
+        'deps': [ 'os_linux' ],
         'func': check_headers('soundcard.h', 'sys/soundcard.h')
+    }, {
+        'name': 'sys_videoio_h',
+        'desc': 'videoio.h',
+        'deps': [ 'os_linux' ],
+        'func': check_headers('sys/videoio.h')
+    }, {
+        'name': 'terminfo',
+        'desc': 'terminfo',
+        'func': check_libs(['ncurses', 'ncursesw'],
+            check_statement('term.h', 'setupterm(0, 1, 0)'))
+    }, {
+        'name': 'termcap',
+        'desc': 'termcap',
+        'deps_neg': ['terminfo'],
+        'func': check_libs(['ncurses', 'tinfo', 'termcap'],
+            check_statement('term.h', 'tgetent(0, 0)'))
     },
 ]
 

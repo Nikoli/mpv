@@ -18,6 +18,7 @@ class Dependency(object):
         try:
             self.check_disabled()
             self.check_dependencies()
+            self.check_negative_dependencies()
             self.check_autodetect_func()
         except DependencyError:
             pass # This exception is used for control flow, don't mind it
@@ -33,6 +34,14 @@ class Dependency(object):
             if not deps <= self.satisfied_deps:
                 missing_deps = deps - self.satisfied_deps
                 self.fail("{0} not found".format(", ".join(missing_deps)))
+                raise DependencyError
+
+    def check_negative_dependencies(self):
+        if 'deps_neg' in self.attributes:
+            deps = set(self.attributes['deps_neg'])
+            if deps <= self.satisfied_deps:
+                conflicting_deps = deps & self.satisfied_deps
+                self.fail("{0} found".format(", ".join(conflicting_deps)))
                 raise DependencyError
 
     def check_autodetect_func(self):
