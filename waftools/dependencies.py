@@ -41,7 +41,7 @@ class Dependency(object):
             deps = set(self.attributes['deps_neg'])
             if deps <= self.satisfied_deps:
                 conflicting_deps = deps & self.satisfied_deps
-                self.fail("{0} found".format(", ".join(conflicting_deps)))
+                self.skip("{0} found".format(", ".join(conflicting_deps)))
                 raise DependencyError
 
     def check_autodetect_func(self):

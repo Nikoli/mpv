@@ -59,11 +59,40 @@ main_dependencies = [
         'desc': 'glob()',
         'func': check_statement('glob.h', 'glob("filename", 0, 0, 0)')
     }, {
-        'name': 'glob_replacement',
+        'name': 'glob_win32_replacement',
         'desc': 'glob() win32 replacement',
         'deps_neg': [ 'glob' ],
         'deps': [ 'os_win32' ],
         'func': check_true
+    }, {
+        'name': 'setmode',
+        'desc': 'setmode()',
+        'func': check_statement('io.h', 'setmode(0, 0)')
+    }, {
+        'name': 'sys_sysinfo_h',
+        'desc': 'sys/sysinfo.h',
+        'func': check_statement('sys/sysinfo.h',
+            'struct sysinfo s_info; s_info.mem_unit=0; sysinfo(&s_info)')
+    }, {
+        'name': 'libguess',
+        'desc': 'libguess support',
+        'func': check_pkg_config('libguess', '>= 1.0'),
+    }, {
+        # XXX: i'm not sure this is correct (misses -ldl)
+        'name': 'libsmbclient',
+        'desc': 'Samba support',
+        'func': check_libs(['smbclient', 'smbclient nsl', 'smbclient ssl nsl'],
+            check_statement('libsmbclient.h', 'smbc_opendir("smb://")')),
+        'module': 'input',
+    }, {
+        'name': 'libquvi4',
+        'desc': 'libquvi 0.4.x support',
+        'func': check_pkg_config('libquvi', '>= 0.4.1'),
+    }, {
+        'name': 'libquvi9',
+        'desc': 'libquvi 0.9.x support',
+        'deps_neg': [ 'libquvi4' ],
+        'func': check_pkg_config('libquvi-0.9', '>= 0.9.0'),
     }
 ]
 
