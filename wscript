@@ -141,6 +141,7 @@ video_output_features = [
 
 def options(opt):
     opt.load('compiler_c')
+    opt.load('waf_customizations')
     opt.load('features')
     opt.parse_features('Audio Outputs', audio_output_features)
     opt.parse_features('Video Outputs', video_output_features)
@@ -150,8 +151,8 @@ def options(opt):
 
 def configure(ctx):
     ctx.load('compiler_c')
+    ctx.load('waf_customizations')
     ctx.load('dependencies')
-    ctx.load('config_header')
     ctx.parse_dependencies(main_dependencies)
     ctx.parse_dependencies(audio_output_features)
     ctx.parse_dependencies(video_output_features)
