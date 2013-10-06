@@ -7,6 +7,9 @@ any_version = None
 def even(n):
     return n % 2 == 0
 
+def define_options(dependency_identifier):
+    return {'define_name':  dependency_identifier.upper()}
+
 def merge_options(dependency_identifier, *args):
     initial_values = {
         'uselib_store': dependency_identifier,
@@ -32,7 +35,9 @@ def check_statement(header, statement):
             #include <{0}>
             int main(int argc, char **argv)
             {{ {1}; return 0; }} """.format(header, statement)
-        opts = merge_options(dependency_identifier, {'fragment':fragment}, kw)
+        opts = merge_options(dependency_identifier,
+                             {'fragment':fragment},
+                             define_options(dependency_identifier), kw)
         return ctx.check_cc(**opts)
     return fn
 
