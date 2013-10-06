@@ -12,7 +12,7 @@ def define_options(dependency_identifier):
 
 def merge_options(dependency_identifier, *args):
     initial_values = {
-        'uselib_store': dependency_identifier,
+        'uselib_store': dependency_identifier.upper(),
         'mandatory': False }
 
     def merge_dicts(r, n):
