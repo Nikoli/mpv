@@ -158,5 +158,7 @@ def configure(ctx):
     if ctx.options.developer:
         print ctx.env
 
+    ctx.write_config_header('config.h')
+
 def build(ctx):
     pass
