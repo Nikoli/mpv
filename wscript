@@ -145,12 +145,18 @@ def options(opt):
     opt.parse_features('Audio Outputs', audio_output_features)
     opt.parse_features('Video Outputs', video_output_features)
 
+    opt.add_option('--developer', action='store_true', default=False,
+                   dest='developer', help='enable developer mode [disabled]')
+
 def configure(ctx):
     ctx.load('compiler_c')
     ctx.load('dependencies')
     ctx.parse_dependencies(main_dependencies)
     ctx.parse_dependencies(audio_output_features)
     ctx.parse_dependencies(video_output_features)
+
+    if ctx.options.developer:
+        print ctx.env
 
 def build(ctx):
     pass
