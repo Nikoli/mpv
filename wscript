@@ -6,7 +6,7 @@ from waftools.checks import *
 
 main_dependencies = [
     {
-        'name': '_lm',
+        'name': 'libm',
         'desc': '-lm',
         'func': check_cc(lib='m')
     }, {
