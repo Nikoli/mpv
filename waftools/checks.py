@@ -8,7 +8,7 @@ def even(n):
     return n % 2 == 0
 
 def define_options(dependency_identifier):
-    return {'define_name':  dependency_identifier.upper()}
+    return {'define_name':  ("have_" + dependency_identifier).upper()}
 
 def merge_options(dependency_identifier, *args):
     initial_values = {
