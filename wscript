@@ -134,7 +134,7 @@ video_output_features = [
     {
         'name': 'vda',
         'desc': 'VDA acceleration',
-        'deps': [ 'os_mac', 'cocoa' ],
+        'deps': [ 'os_darwin', 'cocoa' ],
         'func': check_pkg_config('asd'),
     }
 ]
