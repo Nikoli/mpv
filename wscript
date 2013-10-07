@@ -21,13 +21,13 @@ main_dependencies = [
     }, {
         'name': 'pthreads',
         'desc': 'POSIX threads',
-        'func': check_pthreads()
+        'func': check_pthreads
     }, {
         'name': 'pthreads',
         'desc': 'POSIX threads (w32 static)',
         'deps': [ 'os_mingw32' ],
         'deps_neg': [ 'pthreads' ],
-        'func': check_pthreads_w32_static()
+        'func': check_pthreads_w32_static
     }, {
         'name': 'librt',
         'desc': 'linking with -lrt',
@@ -36,7 +36,7 @@ main_dependencies = [
     }, {
         'name': 'iconv',
         'desc': 'iconv',
-        'func': check_iconv()
+        'func': check_iconv
     }, {
         'name': 'stream_cache',
         'desc': 'stream cache',
@@ -100,7 +100,7 @@ main_dependencies = [
         'name': 'libsmbclient',
         'desc': 'Samba support',
         'deps': [ 'libdl' ],
-        'func': check_libsmbclient(),
+        'func': check_libsmbclient,
         'module': 'input',
     }, {
         'name': 'libquvi4',
