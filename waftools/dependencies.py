@@ -75,5 +75,12 @@ def check_dependency(ctx, dependency):
     Dependency(ctx, satisfied_deps, dependency).check()
 
 @conf
+def detect_target_os_dependency(ctx):
+    target = "os_{0}".format(ctx.env.DEST_OS)
+    ctx.start_msg('Detected target OS:')
+    ctx.end_msg(target)
+    satisfied_deps.add(target)
+
+@conf
 def parse_dependencies(ctx, dependencies):
     [check_dependency(ctx, dependency) for dependency in dependencies]

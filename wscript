@@ -153,6 +153,7 @@ def configure(ctx):
     ctx.load('compiler_c')
     ctx.load('waf_customizations')
     ctx.load('dependencies')
+    ctx.detect_target_os_dependency()
     ctx.parse_dependencies(main_dependencies)
     ctx.parse_dependencies(audio_output_features)
     ctx.parse_dependencies(video_output_features)
