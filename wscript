@@ -3,6 +3,7 @@
 import sys, os
 sys.path.insert(0, os.path.join(os.getcwd(), 'waftools'))
 from waftools.checks import *
+from waftools.custom_checks import *
 
 main_dependencies = [
     {
@@ -78,11 +79,10 @@ main_dependencies = [
         'desc': 'libguess support',
         'func': check_pkg_config('libguess', '>= 1.0'),
     }, {
-        # XXX: i'm not sure this is correct (misses -ldl)
         'name': 'libsmbclient',
         'desc': 'Samba support',
-        'func': check_libs(['smbclient', 'smbclient nsl', 'smbclient ssl nsl'],
-            check_statement('libsmbclient.h', 'smbc_opendir("smb://")')),
+        'deps': [ 'libdl' ],
+        'func': check_libsmbclient(),
         'module': 'input',
     }, {
         'name': 'libquvi4',
