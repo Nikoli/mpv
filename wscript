@@ -19,7 +19,25 @@ main_dependencies = [
         'desc': 'dynamic loader',
         'func': check_libs(['dl'], check_statement('dlfcn.h', 'dlopen("", 0)'))
     }, {
-  # XXX: pthreads, lrt, iconv, rpath
+        'name': 'pthreads',
+        'desc': 'POSIX threads',
+        'func': check_pthreads()
+    }, {
+        'name': 'pthreads',
+        'desc': 'POSIX threads (w32 static)',
+        'deps': [ 'os_mingw32' ],
+        'deps_neg': [ 'pthreads' ],
+        'func': check_pthreads_w32_static()
+    }, {
+        'name': 'librt',
+        'desc': 'linking with -lrt',
+        'deps': [ 'os_linux', 'pthreads' ],
+        'func': check_cc(lib='rt')
+    }, {
+        'name': 'iconv',
+        'desc': 'iconv',
+        'func': check_iconv()
+    }, {
         'name': 'stream_cache',
         'desc': 'stream cache',
         'deps': [ 'pthreads' ],

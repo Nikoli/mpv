@@ -1,6 +1,8 @@
+import os
+
 __all__ = [
     "check_pkg_config", "check_cc", "check_statement", "check_libs",
-    "check_headers", "check_true", "any_version"]
+    "check_headers", "check_true", "any_version", "load_fragment"]
 
 any_version = None
 
@@ -71,3 +73,10 @@ def check_headers(*headers):
 def check_true(ctx, dependency_identifier):
     return True
 
+def load_fragment(fragment):
+    file_path = os.path.join(os.path.dirname(__file__), 'fragments',
+                             fragment + '.c')
+    fp = open(file_path,"r")
+    fragment_code = fp.read()
+    fp.close()
+    return fragment_code
