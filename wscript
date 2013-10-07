@@ -102,8 +102,7 @@ audio_output_features = [
         'desc': 'PortAudio audio output',
         'deps': [ 'pthreads' ],
         'func': check_pkg_config('portaudio-2.0', '>= 19'),
-    },
-    {
+    }, {
         'name': 'openal',
         'desc': 'OpenAL audio output',
         'func': check_pkg_config('openal', '>= 1.13'),
@@ -117,21 +116,18 @@ video_output_features = [
         'desc': 'VDPAU acceleration',
         'deps': [ 'os_linux', 'x11' ],
         'func': check_pkg_config('vdpau', '>= 0.2'),
-    },
-    {
+    }, {
         'name': 'vaapi',
         'desc': 'VAAPI acceleration',
         'deps': [ 'os_linux', 'x11', 'libdl' ],
         'func': check_pkg_config(
             'libva', '>= 0.32.0', 'libva-x11', '>= 0.32.0'),
-    },
-    {
+    }, {
         'name': 'vaapi-vpp',
         'desc': 'VAAPI VPP',
         'deps': [ 'vaapi' ],
         'func': check_pkg_config('libva', '>= 0.34.0'),
-    },
-    {
+    }, {
         'name': 'vda',
         'desc': 'VDA acceleration',
         'deps': [ 'os_darwin', 'cocoa' ],
