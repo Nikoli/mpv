@@ -80,7 +80,6 @@ main_dependencies = [
             rc = select(0, (fd_set *)(0), (fd_set *)(0), (fd_set *)(0),
                         (struct timeval *)(0))""")
     }, {
-        # XXX : posix select / audio select
         'name': 'glob',
         'desc': 'glob()',
         'func': check_statement('glob.h', 'glob("filename", 0, 0, 0)')
@@ -123,6 +122,11 @@ main_dependencies = [
 
 audio_output_features = [
     {
+        'name': 'audio_select',
+        'desc': 'audio select()',
+        'deps': [ 'select' ],
+        'func': check_true,
+    }, {
         'name': 'portaudio',
         'desc': 'PortAudio audio output',
         'deps': [ 'pthreads' ],
