@@ -73,6 +73,13 @@ main_dependencies = [
         'func': check_statement('sys/shm.h',
             'shmget(0, 0, 0); shmat(0, 0, 0); shmctl(0, 0, 0)')
     }, {
+        'name': 'select',
+        'desc': 'POSIX select()',
+        'func': check_statement('sys/select.h', """
+            int rc;
+            rc = select(0, (fd_set *)(0), (fd_set *)(0), (fd_set *)(0),
+                        (struct timeval *)(0))""")
+    }, {
         # XXX : posix select / audio select
         'name': 'glob',
         'desc': 'glob()',
