@@ -1,3 +1,4 @@
+from waflib.Errors import ConfigurationError
 from waflib.Configure import conf
 from waflib.Logs import pprint
 
@@ -49,7 +50,7 @@ class Dependency(object):
             self.success(self.identifier)
         else:
             self.fail()
-
+            self.fatal_if_needed()
 
     def enabled_option(self):
         try:
@@ -67,6 +68,10 @@ class Dependency(object):
 
     def fail(self, reason='no'):
         self.ctx.end_msg(reason, 'RED')
+
+    def fatal_if_needed(self):
+        if self.attributes.get('req', False):
+            raise ConfigurationError(self.attributes['fmsg'])
 
     def skip(self, reason='disabled'):
         self.ctx.end_msg(reason, 'YELLOW')

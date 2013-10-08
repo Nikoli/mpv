@@ -119,13 +119,35 @@ main_dependencies = [
         'func': check_pkg_config('libquvi-0.9', '>= 0.9.0'),
     }, {
         'name': 'libav',
-        'desc': 'libav libraries',
+        'desc': 'libav/ffmpeg',
         'func': check_pkg_config(
             'libavutil',   '> 51.73.0',
             'libavcodec',  '> 54.34.0',
             'libavformat', '> 54.19.0',
-            'libswscale',  '>= 2.0.0',
-            mandatory=True),
+            'libswscale',  '>= 2.0.0'),
+        'req': True,
+        'fmsg': 'Unable to find development files for some of the required Libav libraries. Aborting.'
+    }, {
+        'name': 'libavresample',
+        'desc': 'libavresample',
+        'func': check_pkg_config('libavresample',  '>= 1.0.0'),
+    }, {
+        'name': 'avresample_set_channel_mapping',
+        'desc': 'avresample ch. mapping API',
+        'deps': [ 'libavresample' ],
+        'func': check_statement('libavresample/avresample.h',
+                                'avresample_set_channel_mapping(NULL, NULL)'),
+    }, {
+        'name': 'libswresample',
+        'desc': 'libswresample',
+        'func': check_pkg_config('libswresample', '>= 0.17.102'),
+    }, {
+        'name': 'resampler',
+        'desc': 'usable resampler found',
+        'deps': [ 'libavresample', 'libswresample' ],
+        'func': check_true,
+        'req':  True,
+        'fmsg': 'No resampler found. Install libavresample or libswresample (FFmpeg).'
     }
 ]
 
