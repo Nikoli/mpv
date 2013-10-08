@@ -117,6 +117,15 @@ main_dependencies = [
         'desc': 'libquvi 0.9.x support',
         'deps_neg': [ 'libquvi4' ],
         'func': check_pkg_config('libquvi-0.9', '>= 0.9.0'),
+    }, {
+        'name': 'libav',
+        'desc': 'libav libraries',
+        'func': check_pkg_config(
+            'libavutil',   '> 51.73.0',
+            'libavcodec',  '> 54.34.0',
+            'libavformat', '> 54.19.0',
+            'libswscale',  '>= 2.0.0',
+            mandatory=True),
     }
 ]
 
