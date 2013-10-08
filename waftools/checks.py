@@ -49,15 +49,16 @@ def check_cc(**kw_ext):
         return ctx.check_cc(**options)
     return fn
 
-def check_pkg_config(*args):
+def check_pkg_config(*args, **kw):
     def fn(ctx, dependency_identifier):
         argsl    = list(args)
         packages = [el for (i, el) in enumerate(args) if even(i)]
         sargs    = [i for i in args if i] # remove None
-        return ctx.check_cfg(package=" ".join(packages),
-                             args=sargs + ["--libs", "--cflags"],
-                             uselib_store=dependency_identifier,
-                             mandatory=False)
+        defaults = {
+            'package': " ".join(packages),
+            'args': sargs + ["--libs", "--cflags"] }
+        opts = merge_options(dependency_identifier, defaults, kw)
+        return ctx.check_cfg(**opts)
     return fn
 
 def check_headers(*headers):
