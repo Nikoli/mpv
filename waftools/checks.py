@@ -77,8 +77,8 @@ def check_true(ctx, dependency_identifier):
     return True
 
 def compose_checks(*checks):
-    def fn(ctx, dep_ident):
-        return all([check(ctx, dep_ident, use=dep_ident) for check in checks])
+    def fn(ctx, dependency_identifier):
+        return all([check(ctx, dependency_identifier) for check in checks])
     return fn
 
 def load_fragment(fragment):

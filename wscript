@@ -179,6 +179,13 @@ Libav libraries ({0}). Aborting.".format(" ".join(libav_pkg_config_checks))
         'desc': 'libavutil ref-counting API',
         'func': check_statement('libavutil/frame.h', 'av_frame_unref(NULL)',
                                 use='libav'),
+    } , {
+        'name': 'libavfilter',
+        'desc': 'libavfilter',
+        'func': compose_checks(
+            check_pkg_config('libavfilter'),
+            check_cc(fragment=load_fragment('libavfilter'),
+                     use='libavfilter')),
     }
 ]
 
