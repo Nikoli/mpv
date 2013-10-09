@@ -2,7 +2,8 @@ import os
 
 __all__ = [
     "check_pkg_config", "check_cc", "check_statement", "check_libs",
-    "check_headers", "check_true", "any_version", "load_fragment"]
+    "check_headers", "compose_checks", "check_true", "any_version",
+    "load_fragment"]
 
 any_version = None
 
@@ -74,6 +75,11 @@ def check_headers(*headers):
 
 def check_true(ctx, dependency_identifier):
     return True
+
+def compose_checks(*checks):
+    def fn(ctx, dep_ident):
+        return all([check(ctx, dep_ident, use=dep_ident) for check in checks])
+    return fn
 
 def load_fragment(fragment):
     file_path = os.path.join(os.path.dirname(__file__), 'fragments',
