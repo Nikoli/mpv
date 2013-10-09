@@ -186,6 +186,30 @@ Libav libraries ({0}). Aborting.".format(" ".join(libav_pkg_config_checks))
             check_pkg_config('libavfilter'),
             check_cc(fragment=load_fragment('libavfilter'),
                      use='libavfilter')),
+    }, {
+        'name': 'vf_lavfi',
+        'desc': 'using libavfilter through vf_lavfi',
+        'deps': [ 'libavfilter', 'avutil_refcounting' ],
+        'func': check_true
+    }, {
+        'name': 'av_opt_set_int_list',
+        'desc': 'libavutil av_opt_set_int_list() API',
+        'func': check_statement('libavutil/opt.h',
+                                'av_opt_set_int_list(0,0,(int*)0,0,0)',
+                                use='libav')
+    }, {
+        'name': 'af_lavfi',
+        'desc': 'using libavfilter through af_lavfi',
+        'deps': [ 'libavfilter', 'av_opt_set_int_list' ],
+        'func': check_true
+    }, {
+        'name': 'libavdevice',
+        'desc': 'libavdevice',
+        'func': check_pkg_config('libavdevice', '>= 54.0.0'),
+    }, {
+        'name': 'libpostproc',
+        'desc': 'libpostproc',
+        'func': check_pkg_config('libpostproc', '>= 52.0.0'),
     }
 ]
 
