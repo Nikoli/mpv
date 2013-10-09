@@ -141,10 +141,11 @@ Libav libraries ({0}). Aborting.".format(" ".join(libav_pkg_config_checks))
         'func': check_pkg_config('libavresample',  '>= 1.0.0'),
     }, {
         'name': 'avresample_set_channel_mapping',
-        'desc': 'avresample ch. mapping API',
+        'desc': 'libavresample channel mapping API',
         'deps': [ 'libavresample' ],
         'func': check_statement('libavresample/avresample.h',
-                                'avresample_set_channel_mapping(NULL, NULL)'),
+                                'avresample_set_channel_mapping(NULL, NULL)',
+                                use='libavresample'),
     }, {
         'name': 'libswresample',
         'desc': 'libswresample',
@@ -156,6 +157,28 @@ Libav libraries ({0}). Aborting.".format(" ".join(libav_pkg_config_checks))
         'func': check_true,
         'req':  True,
         'fmsg': 'No resampler found. Install libavresample or libswresample (FFmpeg).'
+    }, {
+        'name': 'av_codec_new_vdpau_api',
+        'desc': 'libavcodec new vdpau API',
+        'func': check_statement('libavutil/pixfmt.h',
+                                'int x = AV_PIX_FMT_VDPAU'),
+    }, {
+        'name': 'avcodec_chroma_pos_api',
+        'desc': 'libavcodec avcodec_enum_to_chroma_pos API',
+        'func': check_statement('libavcodec/avcodec.h', """int x, y;
+            avcodec_enum_to_chroma_pos(&x, &y, AVCHROMA_LOC_UNSPECIFIED)""",
+            use='libav')
+    }, {
+        'name': 'avutil_qp_api',
+        'desc': 'libavutil QP API',
+        'func': check_statement('libavutil/frame.h',
+                                'av_frame_get_qp_table(NULL, NULL, NULL)',
+                                use='libav')
+    }, {
+        'name': 'avutil_refcounting',
+        'desc': 'libavutil ref-counting API',
+        'func': check_statement('libavutil/frame.h', 'av_frame_unref(NULL)',
+                                use='libav'),
     }
 ]
 
@@ -219,9 +242,9 @@ def configure(ctx):
     ctx.load('dependencies')
     ctx.detect_target_os_dependency()
     ctx.parse_dependencies(main_dependencies)
-    ctx.parse_dependencies(libav_dependencies)
     ctx.parse_dependencies(audio_output_features)
     ctx.parse_dependencies(video_output_features)
+    ctx.parse_dependencies(libav_dependencies)
 
     if ctx.options.developer:
         print ctx.env

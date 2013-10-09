@@ -31,7 +31,7 @@ def check_libs(libs, function):
         return False
     return fn
 
-def check_statement(header, statement):
+def check_statement(header, statement, **kw_ext):
     def fn(ctx, dependency_identifier, **kw):
         fragment = """
             #include <{0}>
@@ -39,7 +39,8 @@ def check_statement(header, statement):
             {{ {1}; return 0; }} """.format(header, statement)
         opts = merge_options(dependency_identifier,
                              {'fragment':fragment},
-                             define_options(dependency_identifier), kw)
+                             define_options(dependency_identifier),
+                             kw_ext, kw)
         return ctx.check_cc(**opts)
     return fn
 
