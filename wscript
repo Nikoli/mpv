@@ -117,16 +117,24 @@ main_dependencies = [
         'desc': 'libquvi 0.9.x support',
         'deps_neg': [ 'libquvi4' ],
         'func': check_pkg_config('libquvi-0.9', '>= 0.9.0'),
-    }, {
+    }
+]
+
+libav_pkg_config_checks = [
+    'libavutil',   '> 51.73.0',
+    'libavcodec',  '> 54.34.0',
+    'libavformat', '> 54.19.0',
+    'libswscale',  '>= 2.0.0'
+]
+
+libav_dependencies = [
+    {
         'name': 'libav',
         'desc': 'libav/ffmpeg',
-        'func': check_pkg_config(
-            'libavutil',   '> 51.73.0',
-            'libavcodec',  '> 54.34.0',
-            'libavformat', '> 54.19.0',
-            'libswscale',  '>= 2.0.0'),
+        'func': check_pkg_config(*libav_pkg_config_checks),
         'req': True,
-        'fmsg': 'Unable to find development files for some of the required Libav libraries. Aborting.'
+        'fmsg': "Unable to find development files for some of the required \
+Libav libraries ({0}). Aborting.".format(" ".join(libav_pkg_config_checks))
     }, {
         'name': 'libavresample',
         'desc': 'libavresample',
@@ -211,6 +219,7 @@ def configure(ctx):
     ctx.load('dependencies')
     ctx.detect_target_os_dependency()
     ctx.parse_dependencies(main_dependencies)
+    ctx.parse_dependencies(libav_dependencies)
     ctx.parse_dependencies(audio_output_features)
     ctx.parse_dependencies(video_output_features)
 
