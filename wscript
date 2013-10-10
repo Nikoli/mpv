@@ -36,7 +36,12 @@ main_dependencies = [
     }, {
         'name': 'iconv',
         'desc': 'iconv',
-        'func': check_iconv
+        'func': check_iconv,
+        'req': True,
+        'fmsg': "Unable to find iconv which should be part of a standard \
+compilation environment. Aborting. If you really mean to compile without \
+iconv support use --disable-iconv.",
+        'feature': True
     }, {
         'name': 'stream_cache',
         'desc': 'stream cache',
@@ -261,11 +266,19 @@ video_output_features = [
     }
 ]
 
+def is_feature(dep):
+    return dep.get('feature', False)
+
+def filter_features(dependencies):
+    return filter(is_feature, dependencies)
+
 def options(opt):
     opt.load('compiler_c')
     opt.load('waf_customizations')
     opt.load('features')
-    opt.parse_features('Libav Feaures', libav_features)
+
+    optional_features = filter_features(main_dependencies) + libav_features
+    opt.parse_features('Optional Feaures', optional_features)
     opt.parse_features('Audio Outputs', audio_output_features)
     opt.parse_features('Video Outputs', video_output_features)
 
