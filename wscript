@@ -180,6 +180,16 @@ Libav libraries ({0}). Aborting.".format(" ".join(libav_pkg_config_checks))
         'func': check_statement('libavutil/frame.h', 'av_frame_unref(NULL)',
                                 use='libav'),
     } , {
+        'name': 'av_opt_set_int_list',
+        'desc': 'libavutil av_opt_set_int_list() API',
+        'func': check_statement('libavutil/opt.h',
+                                'av_opt_set_int_list(0,0,(int*)0,0,0)',
+                                use='libav')
+    }
+]
+
+libav_features = [
+    {
         'name': 'libavfilter',
         'desc': 'libavfilter',
         'func': compose_checks(
@@ -187,18 +197,12 @@ Libav libraries ({0}). Aborting.".format(" ".join(libav_pkg_config_checks))
             check_cc(fragment=load_fragment('libavfilter'),
                      use='libavfilter')),
     }, {
-        'name': 'vf_lavfi',
+        'name': 'vf-lavfi',
         'desc': 'using libavfilter through vf_lavfi',
         'deps': [ 'libavfilter', 'avutil_refcounting' ],
         'func': check_true
     }, {
-        'name': 'av_opt_set_int_list',
-        'desc': 'libavutil av_opt_set_int_list() API',
-        'func': check_statement('libavutil/opt.h',
-                                'av_opt_set_int_list(0,0,(int*)0,0,0)',
-                                use='libav')
-    }, {
-        'name': 'af_lavfi',
+        'name': 'af-lavfi',
         'desc': 'using libavfilter through af_lavfi',
         'deps': [ 'libavfilter', 'av_opt_set_int_list' ],
         'func': check_true
@@ -261,6 +265,7 @@ def options(opt):
     opt.load('compiler_c')
     opt.load('waf_customizations')
     opt.load('features')
+    opt.parse_features('Libav Feaures', libav_features)
     opt.parse_features('Audio Outputs', audio_output_features)
     opt.parse_features('Video Outputs', video_output_features)
 
@@ -276,6 +281,7 @@ def configure(ctx):
     ctx.parse_dependencies(audio_output_features)
     ctx.parse_dependencies(video_output_features)
     ctx.parse_dependencies(libav_dependencies)
+    ctx.parse_dependencies(libav_features)
 
     if ctx.options.developer:
         print ctx.env
