@@ -19,7 +19,7 @@ main_dependencies = [
         'desc': 'dynamic loader',
         'func': check_libs(['dl'], check_statement('dlfcn.h', 'dlopen("", 0)'))
     }, {
-        'name': 'pthreads',
+        'name': '--pthreads',
         'desc': 'POSIX threads',
         'func': check_pthreads
     }, {
@@ -34,14 +34,13 @@ main_dependencies = [
         'deps': [ 'os_linux', 'pthreads' ],
         'func': check_cc(lib='rt')
     }, {
-        'name': 'iconv',
+        'name': '--iconv',
         'desc': 'iconv',
         'func': check_iconv,
         'req': True,
         'fmsg': "Unable to find iconv which should be part of a standard \
 compilation environment. Aborting. If you really mean to compile without \
 iconv support use --disable-iconv.",
-        'feature': True
     }, {
         'name': 'stream_cache',
         'desc': 'stream cache',
@@ -58,22 +57,22 @@ iconv support use --disable-iconv.",
         'deps': [ 'os_linux' ],
         'func': check_headers('sys/videoio.h')
     }, {
-        'name': 'terminfo',
+        'name': '--terminfo',
         'desc': 'terminfo',
         'func': check_libs(['ncurses', 'ncursesw'],
-            check_statement('term.h', 'setupterm(0, 1, 0)'))
+            check_statement('term.h', 'setupterm(0, 1, 0)')),
     }, {
-        'name': 'termcap',
+        'name': '--termcap',
         'desc': 'termcap',
         'deps_neg': ['terminfo'],
         'func': check_libs(['ncurses', 'tinfo', 'termcap'],
-            check_statement('term.h', 'tgetent(0, 0)'))
+            check_statement('term.h', 'tgetent(0, 0)')),
     }, {
-        'name': 'termios',
+        'name': '--termios',
         'desc': 'termios',
-        'func': check_headers('termios.h', 'sys/termios.h')
+        'func': check_headers('termios.h', 'sys/termios.h'),
     }, {
-        'name': 'shm',
+        'name': '--shm',
         'desc': 'shm',
         'func': check_statement('sys/shm.h',
             'shmget(0, 0, 0); shmat(0, 0, 0); shmctl(0, 0, 0)')
@@ -104,21 +103,21 @@ iconv support use --disable-iconv.",
         'func': check_statement('sys/sysinfo.h',
             'struct sysinfo s_info; s_info.mem_unit=0; sysinfo(&s_info)')
     }, {
-        'name': 'libguess',
+        'name': '--libguess',
         'desc': 'libguess support',
         'func': check_pkg_config('libguess', '>= 1.0'),
     }, {
-        'name': 'libsmbclient',
+        'name': '--libsmbclient',
         'desc': 'Samba support',
         'deps': [ 'libdl' ],
         'func': check_libsmbclient,
         'module': 'input',
     }, {
-        'name': 'libquvi4',
+        'name': '--libquvi4',
         'desc': 'libquvi 0.4.x support',
         'func': check_pkg_config('libquvi', '>= 0.4.1'),
     }, {
-        'name': 'libquvi9',
+        'name': '--libquvi9',
         'desc': 'libquvi 0.9.x support',
         'deps_neg': [ 'libquvi4' ],
         'func': check_pkg_config('libquvi-0.9', '>= 0.9.0'),
@@ -190,33 +189,29 @@ Libav libraries ({0}). Aborting.".format(" ".join(libav_pkg_config_checks))
         'func': check_statement('libavutil/opt.h',
                                 'av_opt_set_int_list(0,0,(int*)0,0,0)',
                                 use='libav')
-    }
-]
-
-libav_features = [
-    {
-        'name': 'libavfilter',
+    }, {
+        'name': '--libavfilter',
         'desc': 'libavfilter',
         'func': compose_checks(
             check_pkg_config('libavfilter'),
             check_cc(fragment=load_fragment('libavfilter'),
                      use='libavfilter')),
     }, {
-        'name': 'vf-lavfi',
+        'name': '--vf-lavfi',
         'desc': 'using libavfilter through vf_lavfi',
         'deps': [ 'libavfilter', 'avutil_refcounting' ],
         'func': check_true
     }, {
-        'name': 'af-lavfi',
+        'name': '--af-lavfi',
         'desc': 'using libavfilter through af_lavfi',
         'deps': [ 'libavfilter', 'av_opt_set_int_list' ],
         'func': check_true
     }, {
-        'name': 'libavdevice',
+        'name': '--libavdevice',
         'desc': 'libavdevice',
         'func': check_pkg_config('libavdevice', '>= 54.0.0'),
     }, {
-        'name': 'libpostproc',
+        'name': '--libpostproc',
         'desc': 'libpostproc',
         'func': check_pkg_config('libpostproc', '>= 52.0.0'),
     }
@@ -266,19 +261,13 @@ video_output_features = [
     }
 ]
 
-def is_feature(dep):
-    return dep.get('feature', False)
-
-def filter_features(dependencies):
-    return filter(is_feature, dependencies)
-
 def options(opt):
     opt.load('compiler_c')
     opt.load('waf_customizations')
     opt.load('features')
 
-    optional_features = filter_features(main_dependencies) + libav_features
-    opt.parse_features('Optional Feaures', optional_features)
+    optional_features = main_dependencies + libav_dependencies
+    opt.filter_and_parse_features('Optional Feaures', optional_features)
     opt.parse_features('Audio Outputs', audio_output_features)
     opt.parse_features('Video Outputs', video_output_features)
 

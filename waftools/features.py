@@ -49,8 +49,20 @@ class Feature(object):
 def add_feature(group, feature):
     Feature(group, feature).add_options()
 
+def filter_and_parse_features(opt, group, features):
+    def is_feature(dep):
+        return dep['name'].find('--') >= 0
+
+    def strip_feature(dep):
+        dep['name'] = dep['name'].lstrip('-')
+        return dep
+
+    features = [strip_feature(dep) for dep in features if is_feature(dep)]
+    parse_features(opt, group, features)
+
 def parse_features(opt, group, features):
     group = opt.add_option_group(group)
     [add_feature(group, feature) for feature in features]
 
+OptionsContext.filter_and_parse_features = filter_and_parse_features
 OptionsContext.parse_features = parse_features
