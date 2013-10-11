@@ -89,3 +89,7 @@ def detect_target_os_dependency(ctx):
 @conf
 def parse_dependencies(ctx, dependencies):
     [check_dependency(ctx, dependency) for dependency in dependencies]
+
+def filtered_sources(ctx, sources):
+    souces
+    pass
