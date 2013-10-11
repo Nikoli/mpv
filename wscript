@@ -283,7 +283,6 @@ def configure(ctx):
     ctx.parse_dependencies(audio_output_features)
     ctx.parse_dependencies(video_output_features)
     ctx.parse_dependencies(libav_dependencies)
-    ctx.parse_dependencies(libav_features)
 
     if ctx.options.developer:
         print ctx.env
