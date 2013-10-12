@@ -1,5 +1,6 @@
-from waflib.Errors import ConfigurationError
+from waflib.Errors import ConfigurationError, WafError
 from waflib.Configure import conf
+from waflib.Build import BuildContext
 from waflib.Logs import pprint
 
 satisfied_deps = set()
@@ -91,5 +92,23 @@ def parse_dependencies(ctx, dependencies):
     [check_dependency(ctx, dependency) for dependency in dependencies]
 
 def filtered_sources(ctx, sources):
-    souces
-    pass
+    def source_file(source):
+        if isinstance(source, tuple):
+            return source[0]
+        else:
+            return source
+
+    def unpack_and_check_dependency(source):
+        try:
+            _, dependency = source
+            if set(dependency) <= satisfied_deps:
+                return True
+            else:
+                return False
+        except ValueError:
+            return True
+
+    return [source_file(source) for source in sources \
+            if unpack_and_check_dependency(source)]
+
+BuildContext.filtered_sources = filtered_sources
