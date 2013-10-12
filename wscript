@@ -280,6 +280,15 @@ def configure(ctx):
     ctx.load('waf_customizations')
     ctx.load('dependencies')
     ctx.detect_target_os_dependency()
+
+
+    ctx.env.CFLAGS += ["-std=c99", "-Wall", "-Wno-switch", "-Wpointer-arith",
+                       "-Wundef", "-Wno-pointer-sign", "-Wmissing-prototypes",
+                       "-Werror=implicit-function-declaration",
+                       # XXX: hax, please fix for gcc
+                       # "-fcolor-diagnostics"
+                       ]
+
     ctx.parse_dependencies(main_dependencies)
     ctx.parse_dependencies(audio_output_features)
     ctx.parse_dependencies(video_output_features)
