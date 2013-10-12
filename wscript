@@ -275,6 +275,7 @@ def options(opt):
                    dest='developer', help='enable developer mode [disabled]')
 
 def configure(ctx):
+    ctx.find_program('cc', var='CC')
     ctx.load('compiler_c')
     ctx.load('waf_customizations')
     ctx.load('dependencies')

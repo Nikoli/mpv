@@ -1,18 +1,6 @@
 from waflib.Configure import conf
 
 @conf
-def find_gcc(conf):
-    """
-    Only difference from the waf official function, is it tries `cc` before
-    `gcc` and `clang` is added after `gcc`.
-    """
-    cc = conf.find_program(['cc', 'gcc', 'clang'], var='CC')
-    cc = conf.cmd_to_list(cc)
-    conf.get_cc_version(cc, gcc=True)
-    conf.env.CC_NAME = 'gcc'
-    conf.env.CC      = cc
-
-@conf
 def get_config_header(self, defines=True, headers=False, define_prefix=''):
     """
     Only difference is it outputs `#define VAR 0` or `#define VAR value`
