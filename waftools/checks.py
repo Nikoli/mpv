@@ -1,4 +1,5 @@
 import os
+from inflectors import DependencyInflector
 
 __all__ = [
     "check_pkg_config", "check_cc", "check_statement", "check_libs",
@@ -10,13 +11,12 @@ any_version = None
 def even(n):
     return n % 2 == 0
 
-def define_options(dependency_identifier):
-    return {'define_name':  ("have_" + dependency_identifier).upper()}
+def __define_options__(dependency_identifier):
+    return DependencyInflector(dependency_identifier).define_dict()
 
-def merge_options(dependency_identifier, *args):
-    initial_values = {
-        'uselib_store': dependency_identifier,
-        'mandatory': False }
+def __merge_options__(dependency_identifier, *args):
+    initial_values = DependencyInflector(dependency_identifier).storage_dict()
+    initial_values['mandatory'] = False
 
     def merge_dicts(r, n):
         return n and dict(r.items() + n.items()) or r
@@ -38,16 +38,16 @@ def check_statement(header, statement, **kw_ext):
             #include <{0}>
             int main(int argc, char **argv)
             {{ {1}; return 0; }} """.format(header, statement)
-        opts = merge_options(dependency_identifier,
-                             {'fragment':fragment},
-                             define_options(dependency_identifier),
-                             kw_ext, kw)
+        opts = __merge_options__(dependency_identifier,
+                                 {'fragment':fragment},
+                                 __define_options__(dependency_identifier),
+                                 kw_ext, kw)
         return ctx.check_cc(**opts)
     return fn
 
 def check_cc(**kw_ext):
     def fn(ctx, dependency_identifier, **kw):
-        options = merge_options(dependency_identifier, kw_ext, kw)
+        options = __merge_options__(dependency_identifier, kw_ext, kw)
         return ctx.check_cc(**options)
     return fn
 
@@ -59,7 +59,7 @@ def check_pkg_config(*args, **kw_ext):
         defaults = {
             'package': " ".join(packages),
             'args': sargs + ["--libs", "--cflags"] }
-        opts = merge_options(dependency_identifier, defaults, kw_ext, kw)
+        opts = __merge_options__(dependency_identifier, defaults, kw_ext, kw)
         return ctx.check_cfg(**opts)
     return fn
 
@@ -67,7 +67,7 @@ def check_headers(*headers):
     def fn(ctx, dependency_identifier):
         for header in headers:
             defaults = {'header_name': header, 'features': 'c cprogram'}
-            options  = merge_options(dependency_identifier, defaults)
+            options  = __merge_options__(dependency_identifier, defaults)
             if ctx.check(**options):
                 return True
         return False

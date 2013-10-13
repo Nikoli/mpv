@@ -2,6 +2,7 @@ from waflib.Errors import ConfigurationError, WafError
 from waflib.Configure import conf
 from waflib.Build import BuildContext
 from waflib.Logs import pprint
+from inflectors import DependencyInflector
 
 satisfied_deps = set()
 
@@ -21,9 +22,15 @@ class Dependency(object):
             self.check_disabled()
             self.check_dependencies()
             self.check_negative_dependencies()
-            self.check_autodetect_func()
         except DependencyError:
-            pass # This exception is used for control flow, don't mind it
+            # No check was run, since the prerequisites of the dependency are
+            # not satisfied. Make sure the define is 'undefined' so that we
+            # get a `#define YYY 0` in `config.h`.
+            def_key = DependencyInflector(self.identifier).define_key()
+            self.ctx.undefine(def_key)
+            return
+
+        self.check_autodetect_func()
 
     def check_disabled(self):
         if not self.enabled_option():
