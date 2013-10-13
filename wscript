@@ -42,6 +42,16 @@ main_dependencies = [
 compilation environment. Aborting. If you really mean to compile without \
 iconv support use --disable-iconv.",
     }, {
+        'name': 'dos_paths',
+        'desc': 'w32/dos paths',
+        'deps': [ 'os_win32' ],
+        'func': check_true
+    }, {
+        'name': 'priority',
+        'desc': 'w32 priority API',
+        'deps': [ 'os_win32' ],
+        'func': check_true
+    }, {
         'name': 'stream_cache',
         'desc': 'stream cache',
         'deps': [ 'pthreads' ],
