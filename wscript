@@ -306,6 +306,7 @@ def configure(ctx):
     ctx.load('dependencies')
     ctx.detect_target_os_dependency()
 
+    ctx.find_program("perl", var="BIN_PERL")
 
     ctx.env.CFLAGS += ["-std=c99", "-Wall", "-Wno-switch", "-Wpointer-arith",
                        "-Wundef", "-Wno-pointer-sign", "-Wmissing-prototypes",
