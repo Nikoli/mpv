@@ -284,6 +284,21 @@ def options(opt):
     opt.add_option('--developer', action='store_true', default=False,
                    dest='developer', help='enable developer mode [disabled]')
 
+    group = opt.add_option_group("Installation Directories")
+
+    group.add_option("--datadir", type="string", default="share/mpv",
+        help="directory for installing machine independent data files \
+(skins, etc) [$PREFIX/share/mpv]")
+
+    group.add_option("--mandir", type="string", default="share/man",
+        help="directory for installing man pages [$PREFIX/share/man]")
+
+    group.add_option("--confdir", type="string", default="etc/mpv",
+        help="directory for installing configuration files [$PREFIX/etc/mpv]")
+
+    group.add_option("--localedir", type="string", default="share/locale",
+        help="directory for gettext locales [$PREFIX/share/locale]")
+
 def configure(ctx):
     ctx.find_program('cc', var='CC')
     ctx.load('compiler_c')
@@ -306,6 +321,13 @@ def configure(ctx):
 
     if ctx.options.developer:
         print ctx.env
+
+
+    ctx.define("MPLAYER_CONFDIR", ctx.options.confdir)
+    ctx.define("MPLAYER_LOCALEDIR", ctx.options.localedir)
+
+    from sys import argv
+    ctx.define("CONFIGURATION", " ".join(argv))
 
     ctx.write_config_header('config.h')
 
@@ -379,11 +401,54 @@ def build(ctx):
         includes = includes
     )
 
+    sources = [
+        ( "mpvcore/timeline/tl_cue.c" ),
+        ( "mpvcore/timeline/tl_edl.c" ),
+        ( "mpvcore/timeline/tl_matroska.c" ),
+        ( "mpvcore/input/input.c" ),
+        ( "mpvcore/input/joystick.c",            "joystick" ),
+        ( "mpvcore/input/lirc.c",                "lirc"),
+        ( "mpvcore/asxparser.c" ),
+        ( "mpvcore/av_common.c" ),
+        ( "mpvcore/av_log.c" ),
+        ( "mpvcore/av_opts.c" ),
+        ( "mpvcore/bstr.c" ),
+        ( "mpvcore/charset_conv.c" ),
+        ( "mpvcore/codecs.c" ),
+        ( "mpvcore/command.c" ),
+        ( "mpvcore/cpudetect.c" ),
+        ( "mpvcore/encode_lavc.c",               "encoding" ),
+        ( "mpvcore/m_config.c" ),
+        ( "mpvcore/m_option.c" ),
+        ( "mpvcore/m_property.c" ),
+        ( "mpvcore/mp_common.c" ),
+        ( "mpvcore/mp_lua.c",                    "lua" ),
+        ( "mpvcore/mp_msg.c" ),
+        ( "mpvcore/mp_ring.c" ),
+        ( "mpvcore/mplayer.c" ),
+        ( "mpvcore/options.c" ),
+        ( "mpvcore/parser-cfg.c" ),
+        ( "mpvcore/parser-mpcmd.c" ),
+        ( "mpvcore/path.c" ),
+        ( "mpvcore/playlist.c" ),
+        ( "mpvcore/playlist_parser.c" ),
+        ( "mpvcore/resolve_quvi.c",              "libquvi4"),
+        ( "mpvcore/resolve_quvi9.c",             "libquvi9" ),
+        ( "mpvcore/screenshot.c" ),
+        ( "mpvcore/version.c" ),
+    ]
+
+    ctx.objects(
+        target   = "core",
+        source   = ctx.filtered_sources(sources),
+        includes = includes
+    )
+
     ctx(
         target = "mpv",
         use    = [
             "audio",
-            # "core",
+            "core",
             # "demux",
             # "misc",
             # "stream",
