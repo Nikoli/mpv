@@ -4,8 +4,6 @@ from waflib.Build import BuildContext
 from waflib.Logs import pprint
 from inflectors import DependencyInflector
 
-satisfied_deps = set()
-
 class DependencyError(Exception):
     pass
 
@@ -71,7 +69,7 @@ class Dependency(object):
         return "enable_{0}".format(self.identifier)
 
     def success(self, depname):
-        satisfied_deps.add(depname)
+        self.satisfied_deps.add(depname)
         self.ctx.end_msg('yes')
 
     def fail(self, reason='no'):
@@ -85,14 +83,17 @@ class Dependency(object):
         self.ctx.end_msg(reason, 'YELLOW')
 
 def check_dependency(ctx, dependency):
-    Dependency(ctx, satisfied_deps, dependency).check()
+    Dependency(ctx, ctx.env.satisfied_deps, dependency).check()
+
+def configure(ctx):
+    ctx.env['satisfied_deps'] = set()
 
 @conf
 def detect_target_os_dependency(ctx):
     target = "os_{0}".format(ctx.env.DEST_OS)
     ctx.start_msg('Detected target OS:')
     ctx.end_msg(target)
-    satisfied_deps.add(target)
+    ctx.env.satisfied_deps.add(target)
 
 @conf
 def parse_dependencies(ctx, dependencies):
@@ -108,7 +109,7 @@ def filtered_sources(ctx, sources):
     def unpack_and_check_dependency(source):
         try:
             _, dependency = source
-            if set(dependency) <= satisfied_deps:
+            if set(dependency) <= ctx.env.satisfied_deps:
                 return True
             else:
                 return False
@@ -118,8 +119,14 @@ def filtered_sources(ctx, sources):
     return [source_file(source) for source in sources \
             if unpack_and_check_dependency(source)]
 
-def dependencies_includes(ctx):
-    return [ctx.env[dep] for dep in satisfied_deps if (dep in ctx.env)]
+def env_fetch(tx):
+    def fn(ctx):
+        lists = [ctx.env[tx(dep)] for dep in ctx.env.satisfied_deps \
+                    if (tx(dep) in ctx.env)]
+        return filter(None, sum(lists, []))
+    return fn
 
 BuildContext.filtered_sources = filtered_sources
-BuildContext.dependencies_includes = dependencies_includes
+BuildContext.dependencies_includes = env_fetch(lambda x: "INCLUDES_{0}".format(x))
+BuildContext.dependencies_lib      = env_fetch(lambda x: "LIB_{0}".format(x))
+BuildContext.dependencies_libpath  = env_fetch(lambda x: "LIBPATH_{0}".format(x))
