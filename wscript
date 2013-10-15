@@ -296,7 +296,7 @@ def configure(ctx):
                        "-Wundef", "-Wno-pointer-sign", "-Wmissing-prototypes",
                        "-Werror=implicit-function-declaration",
                        # XXX: hax, please fix for gcc
-                       # "-fcolor-diagnostics"
+                       "-fcolor-diagnostics"
                        ]
 
     ctx.parse_dependencies(main_dependencies)
