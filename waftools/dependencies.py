@@ -118,4 +118,8 @@ def filtered_sources(ctx, sources):
     return [source_file(source) for source in sources \
             if unpack_and_check_dependency(source)]
 
+def dependencies_includes(ctx):
+    return [ctx.env[dep] for dep in satisfied_deps if (dep in ctx.env)]
+
 BuildContext.filtered_sources = filtered_sources
+BuildContext.dependencies_includes = dependencies_includes
