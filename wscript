@@ -310,6 +310,9 @@ def configure(ctx):
     ctx.write_config_header('config.h')
 
 def build(ctx):
+    includes = [ctx.bldnode.abspath(), ctx.srcnode.abspath()] + \
+               ctx.dependencies_includes()
+
     sources = [
         ( "audio/audio.c" ),
         ( "audio/chmap.c" ),
@@ -372,7 +375,7 @@ def build(ctx):
     ctx.objects(
         target   = "audio",
         source   = ctx.filtered_sources(sources),
-        includes = [ctx.bldnode.abspath(), ctx.srcnode.abspath()],
+        includes = includes
     )
 
     ctx(
