@@ -446,11 +446,56 @@ def build(ctx):
     )
 
     ctx(
+        rule    = "${BIN_PERL} %s/TOOLS/file2string.pl ${SRC} > ${TGT}" % ctx.srcnode.abspath(),
+        source  = "etc/input.conf",
+        target  = "core/input/input_conf.h",
+        name    = "gen_input_conf",
+        before  = ("c",)
+    )
+
+    ctx(
+        rule    = "${BIN_PERL} %s/TOOLS/matroska.pl --generate-header ${SRC} > ${TGT}" % ctx.srcnode.abspath(),
+        source  = "demux/ebml.c demux/demux_mkv.c",
+        target  = "ebml_types.h",
+        name    = "gen_ebml_types_h",
+        before  = ("c",)
+    )
+
+    ctx(
+        rule    = "${BIN_PERL} %s/TOOLS/matroska.pl --generate-definitions ${SRC} > ${TGT}" % ctx.srcnode.abspath(),
+        source  = "demux/ebml.c",
+        target  = "ebml_defs.c",
+        name    = "gen_ebml_defs_c",
+        before  = ("c",)
+    )
+
+    sources = [
+        ( "demux/codec_tags.c" ),
+        ( "demux/demux.c" ),
+        ( "demux/demux_cue.c" ),
+        ( "demux/demux_edl.c" ),
+        ( "demux/demux_lavf.c" ),
+        ( "demux/demux_libass.c",                "libass"),
+        ( "demux/demux_mf.c" ),
+        ( "demux/demux_mkv.c" ),
+        ( "demux/demux_mng.c",                   "mng"),
+        ( "demux/demux_playlist.c" ),
+        ( "demux/demux_raw.c" ),
+        ( "demux/demux_subreader.c" ),
+        ( "demux/ebml.c" ),
+        ( "demux/mf.c" ),
+    ]
+
+    ctx.objects(
+        target   = "demux",
+        source   = ctx.filtered_sources(sources),
+        includes = includes
+    )
         target = "mpv",
         use    = [
             "audio",
             "core",
-            # "demux",
+            "demux",
             # "misc",
             # "stream",
             # "sub",
