@@ -491,6 +491,42 @@ def build(ctx):
         source   = ctx.filtered_sources(sources),
         includes = includes
     )
+
+    source = [
+        ( "stream/ai_alsa1x.c",                  "alsa" ),
+        ( "stream/ai_oss.c",                     "oss" ),
+        ( "stream/ai_sndio.c"                    "sndio" ),
+        ( "stream/audio_in.c",                   "audio_input" ),
+        ( "stream/cache.c",                      "cache"),
+        ( "stream/cdinfo.c",                     "cdda"),
+        ( "stream/cookies.c" ),
+        ( "stream/dvb_tune.c",                   "dvbin" ),
+        ( "stream/frequencies.c",                "tv" ),
+        ( "stream/rar.c" ),
+        ( "stream/stream.c" ),
+        ( "stream/stream_avdevice.c" ),
+        ( "stream/stream_bluray.c",              "libbluray" ),
+        ( "stream/stream_cdda.c" ),
+        ( "stream/stream_dvb.c" ),
+        ( "stream/stream_dvd.c" ),
+        ( "stream/stream_dvd_common.c" ),
+        ( "stream/stream_file.c" ),
+        ( "stream/stream_lavf.c" ),
+        ( "stream/stream_memory.c" ),
+        ( "stream/stream_mf.c" ),
+        ( "stream/stream_null.c" ),
+        ( "stream/stream_pvr.c" ),
+        ( "stream/stream_radio.c" ),
+        ( "stream/stream_rar.c" ),
+        ( "stream/stream_smb.c" ),
+        ( "stream/stream_tv.c" ),
+        ( "stream/stream_vcd.c" ),
+        ( "stream/tv.c" ),
+        ( "stream/tvi_dummy.c" ),
+        ( "stream/tvi_v4l2.c" ),
+    ]
+
+    ctx(
         target = "mpv",
         use    = [
             "audio",
