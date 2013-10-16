@@ -109,7 +109,7 @@ def filtered_sources(ctx, sources):
     def unpack_and_check_dependency(source):
         try:
             _, dependency = source
-            if set(dependency) <= ctx.env.satisfied_deps:
+            if set([dependency]) <= ctx.env.satisfied_deps:
                 return True
             else:
                 return False
