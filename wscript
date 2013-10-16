@@ -131,6 +131,23 @@ iconv support use --disable-iconv.",
         'desc': 'libquvi 0.9.x support',
         'deps_neg': [ 'libquvi4' ],
         'func': check_pkg_config('libquvi-0.9', '>= 0.9.0'),
+    }, {
+        'name': '--libass',
+        'desc': 'SSA/ASS support',
+        'func': check_pkg_config('libass'),
+        'req': True,
+        'fmsg': "Unable to find development files for libass. Aborting. \
+If you really mean to compile without libass support use --disable-libass."
+    }, {
+        'name': '--libass-osd',
+        'desc': 'libass OSD support',
+        'deps': [ 'libass' ],
+        'func': check_true,
+    }, {
+        'name': '--dummy-osd',
+        'desc': 'dummy OSD support',
+        'deps_neg': [ 'libass-osd' ],
+        'func': check_true,
     }
 ]
 
@@ -556,9 +573,8 @@ def build(ctx):
         ( "sub/draw_bmp.c" ),
         ( "sub/find_subfiles.c" ),
         ( "sub/img_convert.c" ),
-#        ( "sub/osd_dummy.c",                     "dummy_osd" ),
-        ( "sub/osd_dummy.c" ),
-        ( "sub/osd_libass.c",                    "libass_osd" ),
+        ( "sub/osd_dummy.c",                     "dummy-osd" ),
+        ( "sub/osd_libass.c",                    "libass-osd" ),
         ( "sub/sd_ass.c",                        "libass" ),
         ( "sub/sd_lavc.c" ),
         ( "sub/sd_lavc_conv.c" ),
