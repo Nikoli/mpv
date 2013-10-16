@@ -538,7 +538,8 @@ def build(ctx):
         ( "sub/draw_bmp.c" ),
         ( "sub/find_subfiles.c" ),
         ( "sub/img_convert.c" ),
-        ( "sub/osd_dummy.c",                     "dummy_osd" ),
+#        ( "sub/osd_dummy.c",                     "dummy_osd" ),
+        ( "sub/osd_dummy.c" ),
         ( "sub/osd_libass.c",                    "libass_osd" ),
         ( "sub/sd_ass.c",                        "libass" ),
         ( "sub/sd_lavc.c" ),
@@ -643,7 +644,7 @@ def build(ctx):
     ]
 
     ctx.objects(
-        target   = "sub",
+        target   = "video",
         source   = ctx.filtered_sources(sources),
         includes = includes
     )
