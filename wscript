@@ -667,12 +667,21 @@ def build(ctx):
         includes = includes
     )
 
+    getch2_c = {
+        'win32':  'osdep/getch2-win.c',
+    }.get(ctx.env.DEST_OS, "osdep/getch2.c")
+
+    timer_c = {
+        'win32':  'osdep/timer-win2.c',
+        'darwin': 'osdep/timer-darwin.c',
+    }.get(ctx.env.DEST_OS, "osdep/timer-linux.c")
+
     sources = [
-        "osdep/getch2.c",
+        getch2_c,
         "osdep/io.c",
         "osdep/numcores.c",
         "osdep/timer.c",
-        "osdep/timer-darwin.c"
+        timer_c
     ]
 
     ctx.objects(
