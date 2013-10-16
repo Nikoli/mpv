@@ -569,7 +569,7 @@ static MP_NORETURN void exit_player(struct MPContext *mpctx,
 
     osd_free(mpctx->osd);
 
-#ifdef CONFIG_ASS
+#if HAVE_LIBASS
     ass_library_done(mpctx->ass_library);
     mpctx->ass_library = NULL;
 #endif
@@ -4213,7 +4213,7 @@ static void print_timeline(struct MPContext *mpctx)
 
 static void add_subtitle_fonts_from_sources(struct MPContext *mpctx)
 {
-#ifdef CONFIG_ASS
+#if HAVE_LIBASS
     if (mpctx->opts->ass_enabled) {
         for (int j = 0; j < mpctx->num_sources; j++) {
             struct demuxer *d = mpctx->sources[j];
@@ -4419,7 +4419,7 @@ static void play_current_file(struct MPContext *mpctx)
         mp_msg(MSGT_CPLAYER, MSGL_DBG2, "\n[[[init getch2]]]\n");
     }
 
-#ifdef CONFIG_ASS
+#if HAVE_LIBASS
     if (opts->ass_style_override)
         ass_set_style_overrides(mpctx->ass_library, opts->ass_force_style_list);
 #endif
@@ -4693,7 +4693,7 @@ terminate_playback:  // don't jump here after ao/vo/getch initialization!
     talloc_free(mpctx->resolve_result);
     mpctx->resolve_result = NULL;
 
-#ifdef CONFIG_ASS
+#if HAVE_LIBASS
     if (mpctx->osd->ass_renderer)
         ass_renderer_done(mpctx->osd->ass_renderer);
     mpctx->osd->ass_renderer = NULL;
@@ -5007,7 +5007,7 @@ static int mpv_main(int argc, char *argv[])
     }
 #endif
 
-#ifdef CONFIG_ASS
+#if HAVE_LIBASS
     mpctx->ass_library = mp_ass_init(opts);
 #endif
 

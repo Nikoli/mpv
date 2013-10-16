@@ -1926,7 +1926,7 @@ static const m_option_t mp_properties[] = {
     M_OPTION_PROPERTY_CUSTOM("sub-visibility", property_osd_helper),
     M_OPTION_PROPERTY_CUSTOM("sub-forced-only", property_osd_helper),
     M_OPTION_PROPERTY_CUSTOM("sub-scale", property_osd_helper),
-#ifdef CONFIG_ASS
+#if HAVE_LIBASS
     M_OPTION_PROPERTY_CUSTOM("ass-use-margins", property_osd_helper),
     M_OPTION_PROPERTY_CUSTOM("ass-vsfilter-aspect-compat", property_osd_helper),
     M_OPTION_PROPERTY_CUSTOM("ass-style-override", property_osd_helper),
