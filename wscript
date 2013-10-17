@@ -7,6 +7,10 @@ from waftools.custom_checks import *
 
 main_dependencies = [
     {
+        'name': 'ebx_available',
+        'desc': 'ebx availability',
+        'func': check_cc(fragment=load_fragment('ebx'))
+    } , {
         'name': 'libm',
         'desc': '-lm',
         'func': check_cc(lib='m')
