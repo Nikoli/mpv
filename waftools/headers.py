@@ -1,9 +1,9 @@
 def __get_version__(ctx):
     import subprocess
-    process = subprocess.Popen("./version.sh --print",
+    process = subprocess.Popen(["./version.sh", "--print"],
                                stdout=subprocess.PIPE,
                                stderr=subprocess.PIPE,
-                               cwd=ctx.srcnode.abspath(), shell=True)
+                               cwd=ctx.srcnode.abspath())
     process.wait()
     (version, err) = process.communicate()
     return version.strip()
