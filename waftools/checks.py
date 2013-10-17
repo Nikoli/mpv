@@ -47,7 +47,9 @@ def check_statement(header, statement, **kw_ext):
 
 def check_cc(**kw_ext):
     def fn(ctx, dependency_identifier, **kw):
-        options = __merge_options__(dependency_identifier, kw_ext, kw)
+        options = __merge_options__(dependency_identifier,
+                                    __define_options__(dependency_identifier),
+                                    kw_ext, kw)
         return ctx.check_cc(**options)
     return fn
 
