@@ -23,17 +23,11 @@
 
 #include "config.h"
 
-#if !defined(__MORPHOS__)
-#define CONFIG_IOCTL
-#endif
-
 #include <stdlib.h>
 #include <stdint.h>
 #include <string.h>
 #include <signal.h>
-#if HAVE_IOCTL
 #include <sys/ioctl.h>
-#endif
 
 #if HAVE_TERMIOS
 #if HAVE_TERMIOS_H
@@ -333,14 +327,12 @@ int load_termcap(char *termtype){
 }
 
 void get_screen_size(void) {
-#if HAVE_IOCTL
     struct winsize ws;
     if (ioctl(0, TIOCGWINSZ, &ws) < 0 || !ws.ws_row || !ws.ws_col)
         return;
 
     screen_width = ws.ws_col;
     screen_height = ws.ws_row;
-#endif
 }
 
 #define BUF_LEN 256

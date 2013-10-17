@@ -410,7 +410,7 @@ static inline int get_volume(radio_priv_t* priv,int* volume){
 }
 
 
-#ifndef CONFIG_RADIO_CAPTURE
+#if !HAVE_RADIO_CAPTURE
 /*****************************************************************
  * \brief stub, if capture disabled at compile-time
  * \return STREAM_OK

@@ -1557,7 +1557,7 @@ static void xscreensaver_heartbeat(struct vo_x11_state *x11)
 
 static int xss_suspend(Display *mDisplay, Bool suspend)
 {
-#ifndef CONFIG_XSS
+#if !HAVE_XSS
     return 0;
 #else
     int event, error, major, minor;

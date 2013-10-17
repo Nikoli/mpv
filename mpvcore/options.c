@@ -97,7 +97,7 @@ static const m_option_t tvopts_conf[]={
     {"chanlist", &stream_tv_defaults.chanlist, CONF_TYPE_STRING, 0, 0, 0, NULL},
     {"norm", &stream_tv_defaults.norm, CONF_TYPE_STRING, 0, 0, 0, NULL},
     {"automute", &stream_tv_defaults.automute, CONF_TYPE_INT, CONF_RANGE, 0, 255, NULL},
-#if defined(CONFIG_TV_V4L2)
+#if HAVE_TV_V4L2
     {"normid", &stream_tv_defaults.normid, CONF_TYPE_INT, 0, 0, 0, NULL},
 #endif
     {"width", &stream_tv_defaults.width, CONF_TYPE_INT, 0, 0, 4096, NULL},
@@ -111,7 +111,7 @@ static const m_option_t tvopts_conf[]={
     {"hue", &stream_tv_defaults.hue, CONF_TYPE_INT, CONF_RANGE, -100, 100, NULL},
     {"saturation", &stream_tv_defaults.saturation, CONF_TYPE_INT, CONF_RANGE, -100, 100, NULL},
     {"gain", &stream_tv_defaults.gain, CONF_TYPE_INT, CONF_RANGE, -1, 100, NULL},
-#if defined(CONFIG_TV_V4L2)
+#if HAVE_TV_V4L2
     {"amode", &stream_tv_defaults.amode, CONF_TYPE_INT, CONF_RANGE, 0, 3, NULL},
     {"volume", &stream_tv_defaults.volume, CONF_TYPE_INT, CONF_RANGE, 0, 65535, NULL},
     {"bass", &stream_tv_defaults.bass, CONF_TYPE_INT, CONF_RANGE, 0, 65535, NULL},
@@ -126,7 +126,7 @@ static const m_option_t tvopts_conf[]={
 #if HAVE_ALSA
     {"alsa", &stream_tv_defaults.alsa, CONF_TYPE_FLAG, 0, 0, 1, NULL},
 #endif /* HAVE_ALSA */
-#endif /* defined(CONFIG_TV_V4L2) */
+#endif /* HAVE_TV_V4L2 */
     {"adevice", &stream_tv_defaults.adevice, CONF_TYPE_STRING, 0, 0, 0, NULL},
     {"audioid", &stream_tv_defaults.audio_id, CONF_TYPE_INT, CONF_RANGE, 0, 9, NULL},
     {NULL, NULL, 0, 0, 0, 0, NULL}
