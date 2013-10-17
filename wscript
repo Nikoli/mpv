@@ -348,10 +348,6 @@ def configure(ctx):
     ctx.parse_dependencies(video_output_features)
     ctx.parse_dependencies(libav_dependencies)
 
-    if ctx.options.developer:
-        print ctx.env
-
-
     ctx.define("MPLAYER_CONFDIR", ctx.options.confdir)
     ctx.define("MPLAYER_LOCALEDIR", ctx.options.localedir)
 
@@ -359,6 +355,9 @@ def configure(ctx):
     ctx.define("CONFIGURATION", " ".join(argv))
 
     ctx.load('headers')
+
+    if ctx.options.developer:
+        print ctx.env
 
 def build(ctx):
     includes = [ctx.bldnode.abspath(), ctx.srcnode.abspath()] + \
