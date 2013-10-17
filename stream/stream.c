@@ -804,7 +804,7 @@ static int stream_enable_cache(stream_t **stream, int64_t size, int64_t min,
 
     int res = -1;
 
-#ifdef CONFIG_STREAM_CACHE
+#if HAVE_STREAM_CACHE
     res = stream_cache_init(cache, orig, size, min, seek_limit);
 #endif
 
