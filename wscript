@@ -338,6 +338,7 @@ def configure(ctx):
 
     ctx.env.CFLAGS += ["-std=c99", "-Wall", "-Wno-switch", "-Wpointer-arith",
                        "-Wundef", "-Wno-pointer-sign", "-Wmissing-prototypes",
+                       "-Wno-logical-op-parentheses",
                        "-Werror=implicit-function-declaration",
                        # XXX: hax, please fix for gcc
                        "-fcolor-diagnostics"
