@@ -35,11 +35,11 @@
 #include <sys/ioctl.h>
 #endif
 
-#ifdef HAVE_TERMIOS
-#ifdef HAVE_TERMIOS_H
+#if HAVE_TERMIOS
+#if HAVE_TERMIOS_H
 #include <termios.h>
 #endif
-#ifdef HAVE_SYS_TERMIOS_H
+#if HAVE_SYS_TERMIOS_H
 #include <sys/termios.h>
 #endif
 #endif
@@ -52,7 +52,7 @@
 #include "mpvcore/input/keycodes.h"
 #include "getch2.h"
 
-#ifdef HAVE_TERMIOS
+#if HAVE_TERMIOS
 static volatile struct termios tio_orig;
 static volatile int tio_orig_set;
 #endif
@@ -76,12 +76,12 @@ typedef struct {
 
 static keycode_map getch2_keys;
 
-#ifdef HAVE_TERMCAP
+#if HAVE_TERMCAP
 
 static char *term_rmkx = NULL;
 static char *term_smkx = NULL;
 
-#ifdef HAVE_TERMINFO
+#if HAVE_TERMINFO
 #include <curses.h>
 #endif
 #include <term.h>
@@ -143,7 +143,7 @@ static keycode_st* keys_push_once(char *p, int code) {
     return st;
 }
 
-#ifdef HAVE_TERMCAP
+#if HAVE_TERMCAP
 
 typedef struct {
     char *buf;
@@ -233,9 +233,9 @@ static void termcap_add_extra_f_keys(void) {
 #endif
 
 int load_termcap(char *termtype){
-#ifdef HAVE_TERMCAP
+#if HAVE_TERMCAP
 
-#ifdef HAVE_TERMINFO
+#if HAVE_TERMINFO
     use_env(TRUE);
     int ret;
     if (setupterm(termtype, 1, &ret) != OK) {
@@ -451,12 +451,12 @@ static void do_activate_getch2(void)
     if (getch2_active)
         return;
 
-#ifdef HAVE_TERMCAP
+#if HAVE_TERMCAP
     if (term_smkx)
         tputs(term_smkx, 1, putchar);
 #endif
 
-#ifdef HAVE_TERMIOS
+#if HAVE_TERMIOS
     struct termios tio_new;
     tcgetattr(0,&tio_new);
 
@@ -479,12 +479,12 @@ static void do_deactivate_getch2(void)
     if (!getch2_active)
         return;
 
-#ifdef HAVE_TERMCAP
+#if HAVE_TERMCAP
     if (term_rmkx)
         tputs(term_rmkx, 1, putchar);
 #endif
 
-#ifdef HAVE_TERMIOS
+#if HAVE_TERMIOS
     if (tio_orig_set) {
         // once set, it will never be set again
         // so we can cast away volatile here

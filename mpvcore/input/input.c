@@ -1733,7 +1733,7 @@ static void remove_dead_fds(struct input_ctx *ictx)
     }
 }
 
-#ifdef HAVE_POSIX_SELECT
+#if HAVE_POSIX_SELECT
 
 static void input_wait_read(struct input_ctx *ictx, int time)
 {

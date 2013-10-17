@@ -31,7 +31,7 @@
 
 #include "config.h"
 
-#ifdef HAVE_SHM
+#if HAVE_SHM
 #include <sys/ipc.h>
 #include <sys/shm.h>
 #include <X11/extensions/XShm.h>
@@ -96,7 +96,7 @@ struct xvctx {
     struct mp_rect dst_rect;
     uint32_t max_width, max_height; // zero means: not set
     int Shmem_Flag;
-#ifdef HAVE_SHM
+#if HAVE_SHM
     XShmSegmentInfo Shminfo[2];
     int Shm_Warned_Slow;
 #endif
@@ -491,7 +491,7 @@ static void allocate_xvimage(struct vo *vo, int foo)
     struct vo_x11_state *x11 = vo->x11;
     // align it for faster OSD rendering (draw_bmp.c swscale usage)
     int aligned_w = FFALIGN(ctx->image_width, 32);
-#ifdef HAVE_SHM
+#if HAVE_SHM
     if (x11->display_is_local && XShmQueryExtension(x11->display)) {
         ctx->Shmem_Flag = 1;
         x11->ShmCompletionEvent = XShmGetEventBase(x11->display)
@@ -537,7 +537,7 @@ static void allocate_xvimage(struct vo *vo, int foo)
 static void deallocate_xvimage(struct vo *vo, int foo)
 {
     struct xvctx *ctx = vo->priv;
-#ifdef HAVE_SHM
+#if HAVE_SHM
     if (ctx->Shmem_Flag) {
         XShmDetach(vo->x11->display, &ctx->Shminfo[foo]);
         shmdt(ctx->Shminfo[foo].shmaddr);
@@ -560,7 +560,7 @@ static inline void put_xvimage(struct vo *vo, XvImage *xvi)
     struct mp_rect *dst = &ctx->dst_rect;
     int dw = dst->x1 - dst->x0, dh = dst->y1 - dst->y0;
     int sw = src->x1 - src->x0, sh = src->y1 - src->y0;
-#ifdef HAVE_SHM
+#if HAVE_SHM
     if (ctx->Shmem_Flag) {
         XvShmPutImage(x11->display, ctx->xv_port, x11->window, x11->vo_gc, xvi,
                       src->x0, src->y0, sw, sh,
@@ -615,7 +615,7 @@ static void draw_osd(struct vo *vo, struct osd_state *osd)
 
 static void wait_for_completion(struct vo *vo, int max_outstanding)
 {
-#ifdef HAVE_SHM
+#if HAVE_SHM
     struct xvctx *ctx = vo->priv;
     struct vo_x11_state *x11 = vo->x11;
     if (ctx->Shmem_Flag) {

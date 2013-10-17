@@ -65,7 +65,7 @@
 #include "stream/stream_dvd.h"
 #endif
 #include "screenshot.h"
-#ifdef HAVE_SYS_MMAN_H
+#if HAVE_SYS_MMAN_H
 #include <sys/mman.h>
 #endif
 
@@ -2243,7 +2243,7 @@ static int edit_filters_osd(struct MPContext *mpctx, enum stream_type mediatype,
     return r;
 }
 
-#ifdef HAVE_SYS_MMAN_H
+#if HAVE_SYS_MMAN_H
 
 static int ext2_sub_find(struct MPContext *mpctx, int id)
 {
@@ -2903,7 +2903,7 @@ void run_command(MPContext *mpctx, mp_cmd_t *cmd)
         }
         break;
 
-#ifdef HAVE_SYS_MMAN_H
+#if HAVE_SYS_MMAN_H
     case MP_CMD_OVERLAY_ADD:
         overlay_add(mpctx,
                     cmd->args[0].v.i, cmd->args[1].v.i, cmd->args[2].v.i,

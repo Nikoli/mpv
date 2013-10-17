@@ -37,10 +37,10 @@
 #include "mpvcore/options.h"
 #include "mpvcore/mp_msg.h"
 
-#ifdef HAVE_SYS_SOUNDCARD_H
+#if HAVE_SYS_SOUNDCARD_H
 #include <sys/soundcard.h>
 #else
-#ifdef HAVE_SOUNDCARD_H
+#if HAVE_SOUNDCARD_H
 #include <soundcard.h>
 #endif
 #endif
@@ -348,7 +348,7 @@ ac3_retry:
         // Measuring buffer size:
         void *data;
         p->buffersize = 0;
-#ifdef HAVE_AUDIO_SELECT
+#if HAVE_AUDIO_SELECT
         data = malloc(p->outburst);
         memset(data, 0, p->outburst);
         while (p->buffersize < 0x40000) {
@@ -455,7 +455,7 @@ static int get_space(struct ao *ao)
 #endif
 
     // check buffer
-#ifdef HAVE_AUDIO_SELECT
+#if HAVE_AUDIO_SELECT
     {
         fd_set rfds;
         struct timeval tv;

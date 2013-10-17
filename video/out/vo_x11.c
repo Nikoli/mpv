@@ -38,7 +38,7 @@
 
 #include "x11_common.h"
 
-#ifdef HAVE_SHM
+#if HAVE_SHM
 #include <sys/ipc.h>
 #include <sys/shm.h>
 #include <X11/extensions/XShm.h>
@@ -92,7 +92,7 @@ struct priv {
     int num_buffers;
 
     int Shmem_Flag;
-#ifdef HAVE_SHM
+#if HAVE_SHM
     int Shm_Warned_Slow;
 
     XShmSegmentInfo Shminfo[2];
@@ -155,7 +155,7 @@ static int find_depth_from_visuals(struct vo *vo, Visual ** visual_return)
 static void getMyXImage(struct priv *p, int foo)
 {
     struct vo *vo = p->vo;
-#ifdef HAVE_SHM
+#if HAVE_SHM
     if (vo->x11->display_is_local && XShmQueryExtension(vo->x11->display)) {
         p->Shmem_Flag = 1;
         vo->x11->ShmCompletionEvent = XShmGetEventBase(vo->x11->display)
@@ -219,7 +219,7 @@ shmemerror:
     memset(p->myximage[foo]->data, 0, p->myximage[foo]->bytes_per_line
                                       * p->image_height);
     p->ImageData[foo] = p->myximage[foo]->data;
-#ifdef HAVE_SHM
+#if HAVE_SHM
 }
 #endif
 }
@@ -227,7 +227,7 @@ shmemerror:
 static void freeMyXImage(struct priv *p, int foo)
 {
     struct vo *vo = p->vo;
-#ifdef HAVE_SHM
+#if HAVE_SHM
     if (p->Shmem_Flag) {
         XShmDetach(vo->x11->display, &p->Shminfo[foo]);
         XDestroyImage(p->myximage[foo]);
@@ -395,7 +395,7 @@ static void Display_Image(struct priv *p, XImage *myximage)
 
     XImage *x_image = p->myximage[p->current_buf];
 
-#ifdef HAVE_SHM
+#if HAVE_SHM
     if (p->Shmem_Flag) {
         XShmPutImage(vo->x11->display, vo->x11->window, vo->x11->vo_gc, x_image,
                      0, 0, p->dst.x0, p->dst.y0, p->dst_w, p->dst_h,
@@ -441,7 +441,7 @@ static mp_image_t *get_screenshot(struct vo *vo)
 
 static void wait_for_completion(struct vo *vo, int max_outstanding)
 {
-#ifdef HAVE_SHM
+#if HAVE_SHM
     struct priv *ctx = vo->priv;
     struct vo_x11_state *x11 = vo->x11;
     if (ctx->Shmem_Flag) {

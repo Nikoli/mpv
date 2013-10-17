@@ -51,10 +51,10 @@
 #ifdef CONFIG_RADIO_CAPTURE
 #include "audio_in.h"
 
-#ifdef HAVE_SYS_SOUNDCARD_H
+#if HAVE_SYS_SOUNDCARD_H
 #include <sys/soundcard.h>
 #else
-#ifdef HAVE_SOUNDCARD_H
+#if HAVE_SOUNDCARD_H
 #include <soundcard.h>
 #else
 #include <linux/soundcard.h>

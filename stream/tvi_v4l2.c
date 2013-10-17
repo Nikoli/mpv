@@ -46,10 +46,10 @@ known issues:
 #include <sys/types.h>
 #include <unistd.h>
 #include <math.h>
-#ifdef HAVE_SYS_SYSINFO_H
+#if HAVE_SYS_SYSINFO_H
 #include <sys/sysinfo.h>
 #endif
-#ifdef HAVE_SYS_VIDEOIO_H
+#if HAVE_SYS_VIDEOIO_H
 #include <sys/videoio.h>
 #else
 #include <linux/types.h>
@@ -1321,7 +1321,7 @@ static int get_capture_buffer_size(priv_t *priv)
     if (priv->tv_param->buffer_size >= 0) {
         bufsize = priv->tv_param->buffer_size*1024*1024;
     } else {
-#ifdef HAVE_SYS_SYSINFO_H
+#if HAVE_SYS_SYSINFO_H
         struct sysinfo si;
 
         sysinfo(&si);

@@ -142,14 +142,14 @@ static bool is_software_gl(GL *gl)
            strcmp(renderer, "Mesa X11") == 0;
 }
 
-#ifdef HAVE_LIBDL
+#if HAVE_LIBDL
 #include <dlfcn.h>
 #endif
 
 void *mp_getdladdr(const char *s)
 {
     void *ret = NULL;
-#ifdef HAVE_LIBDL
+#if HAVE_LIBDL
     void *handle = dlopen(NULL, RTLD_LAZY);
     if (!handle)
         return NULL;
