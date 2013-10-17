@@ -543,7 +543,7 @@ def build(ctx):
         ( "stream/ai_oss.c",                     "oss" ),
         ( "stream/ai_sndio.c",                   "sndio" ),
         ( "stream/audio_in.c",                   "audio_input" ),
-        ( "stream/cache.c",                      "cache"),
+        ( "stream/cache.c",                      "stream_cache"),
         ( "stream/cdinfo.c",                     "cdda"),
         ( "stream/cookies.c" ),
         ( "stream/dvb_tune.c",                   "dvbin" ),
