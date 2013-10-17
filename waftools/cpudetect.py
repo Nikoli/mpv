@@ -27,4 +27,4 @@ def configure(ctx):
     ctx.define('HAVE_SSE2',  'ARCH_X86', quote=False)
     ctx.define('HAVE_SSSE3', 'ARCH_X86', quote=False)
 
-    locals().get(ctx.env.DEST_CPU, default)(ctx)
+    globals().get(ctx.env.DEST_CPU, default)(ctx)
