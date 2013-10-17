@@ -152,6 +152,13 @@ If you really mean to compile without libass support use --disable-libass."
         'desc': 'dummy OSD support',
         'deps_neg': [ 'libass-osd' ],
         'func': check_true,
+    } , {
+        'name': 'zlib',
+        'desc': 'zlib',
+        'func': check_libs(['z'],
+                    check_statement('zlib.h', 'inflate(0, Z_NO_FLUSH)')),
+        'req': True,
+        'fmsg': 'Unable to find development files for zlib.'
     }
 ]
 
