@@ -66,7 +66,7 @@
 #include <X11/XF86keysym.h>
 #endif
 
-#if CONFIG_ZLIB
+#if HAVE_ZLIB
 #include <zlib.h>
 #endif
 
@@ -954,7 +954,7 @@ static void vo_x11_update_window_title(struct vo *vo)
     vo_x11_set_property_utf8(vo, x11->XA_NET_WM_ICON_NAME, title);
 }
 
-#if CONFIG_ZLIB
+#if HAVE_ZLIB
 static bstr decompress_gz(bstr in)
 {
     bstr res = {0};
