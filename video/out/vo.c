@@ -66,7 +66,7 @@ extern struct vo_driver video_out_wayland;
 
 const struct vo_driver *video_out_drivers[] =
 {
-#if CONFIG_VDPAU
+#if HAVE_VDPAU
         &video_out_vdpau,
 #endif
 #ifdef CONFIG_GL
@@ -88,7 +88,7 @@ const struct vo_driver *video_out_drivers[] =
 #ifdef CONFIG_GL
         &video_out_opengl_old,
 #endif
-#if CONFIG_VAAPI
+#if HAVE_VAAPI
         &video_out_vaapi,
 #endif
 #ifdef CONFIG_X11

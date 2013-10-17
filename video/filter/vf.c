@@ -113,7 +113,7 @@ static const vf_info_t *const filter_list[] = {
 #ifdef CONFIG_DLOPEN
     &vf_info_dlopen,
 #endif
-#if CONFIG_VAAPI_VPP
+#if HAVE_VAAPI_VPP
     &vf_info_vaapi,
 #endif
     NULL

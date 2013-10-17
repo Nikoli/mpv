@@ -102,18 +102,18 @@ static const struct vd_lavc_hwdec mp_vd_lavc_crystalhd = {
 };
 
 static const struct vd_lavc_hwdec *hwdec_list[] = {
-#if CONFIG_VDPAU
+#if HAVE_VDPAU
 #if HAVE_AV_CODEC_NEW_VDPAU_API
     &mp_vd_lavc_vdpau,
 #else
     &mp_vd_lavc_vdpau_old,
 #endif
-#endif // CONFIG_VDPAU
-#if CONFIG_VDA
+#endif // HAVE_VDPAU
+#if HAVE_VDA
     &mp_vd_lavc_vda,
 #endif
     &mp_vd_lavc_crystalhd,
-#if CONFIG_VAAPI
+#if HAVE_VAAPI
     &mp_vd_lavc_vaapi,
     &mp_vd_lavc_vaapi_copy,
 #endif
