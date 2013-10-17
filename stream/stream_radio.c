@@ -378,7 +378,7 @@ static const radio_driver_t radio_driver_v4l2={
     set_frequency_v4l2,
     get_frequency_v4l2
 };
-#endif /* CONFIG_RADIO_V4L2 */
+#endif /* HAVE_RADIO_V4L2 */
 
 static inline int init_frac(radio_priv_t* priv){
     return priv->driver->init_frac(priv);
@@ -616,7 +616,7 @@ static int init_audio(radio_priv_t *priv)
 
     return STREAM_OK;
 }
-#endif /* CONFIG_RADIO_CAPTURE */
+#endif /* HAVE_RADIO_CAPTURE */
 
 /*-------------------------------------------------------------------------
  for call from mplayer.c

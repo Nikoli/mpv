@@ -2694,7 +2694,7 @@ void run_command(MPContext *mpctx, mp_cmd_t *cmd)
                         pvr_get_current_channelname(mpctx->stream),
                         pvr_get_current_stationname(mpctx->stream));
         }
-#endif /* CONFIG_PVR */
+#endif /* HAVE_PVR */
         break;
 
     case MP_CMD_TV_STEP_FREQ:
@@ -2707,7 +2707,7 @@ void run_command(MPContext *mpctx, mp_cmd_t *cmd)
                         pvr_get_current_channelname(mpctx->stream),
                         pvr_get_current_frequency(mpctx->stream));
         }
-#endif /* CONFIG_PVR */
+#endif /* HAVE_PVR */
         break;
 
     case MP_CMD_TV_SET_NORM:
@@ -2736,7 +2736,7 @@ void run_command(MPContext *mpctx, mp_cmd_t *cmd)
                         pvr_get_current_channelname(mpctx->stream),
                         pvr_get_current_stationname(mpctx->stream));
         }
-#endif /* CONFIG_PVR */
+#endif /* HAVE_PVR */
 #if HAVE_DVBIN
         if (mpctx->stream->type == STREAMTYPE_DVB) {
             int dir;
@@ -2754,7 +2754,7 @@ void run_command(MPContext *mpctx, mp_cmd_t *cmd)
                 mpctx->dvbin_reopen = 1;
             }
         }
-#endif /* CONFIG_DVBIN */
+#endif /* HAVE_DVBIN */
         break;
 
     case MP_CMD_TV_SET_CHANNEL:
@@ -2772,7 +2772,7 @@ void run_command(MPContext *mpctx, mp_cmd_t *cmd)
                         pvr_get_current_channelname(mpctx->stream),
                         pvr_get_current_stationname(mpctx->stream));
         }
-#endif /* CONFIG_PVR */
+#endif /* HAVE_PVR */
         break;
 
 #if HAVE_DVBIN
@@ -2787,7 +2787,7 @@ void run_command(MPContext *mpctx, mp_cmd_t *cmd)
             }
         }
         break;
-#endif /* CONFIG_DVBIN */
+#endif /* HAVE_DVBIN */
 
     case MP_CMD_TV_LAST_CHANNEL:
         if (get_tvh(mpctx)) {
@@ -2804,7 +2804,7 @@ void run_command(MPContext *mpctx, mp_cmd_t *cmd)
                         pvr_get_current_channelname(mpctx->stream),
                         pvr_get_current_stationname(mpctx->stream));
         }
-#endif /* CONFIG_PVR */
+#endif /* HAVE_PVR */
         break;
 
     case MP_CMD_TV_STEP_NORM:
@@ -2816,7 +2816,7 @@ void run_command(MPContext *mpctx, mp_cmd_t *cmd)
         if (get_tvh(mpctx))
             tv_step_chanlist(get_tvh(mpctx));
         break;
-#endif /* CONFIG_TV */
+#endif /* HAVE_TV */
 
     case MP_CMD_SUB_ADD:
         mp_add_subtitles(mpctx, cmd->args[0].v.s);

@@ -212,7 +212,7 @@ error_exit:
     return NULL;
 }
 
-#else /* CONFIG_LCMS2 */
+#else /* HAVE_LCMS2 */
 
 const struct m_sub_options mp_icc_conf = {
     .opts = (m_option_t[]) { {0} },

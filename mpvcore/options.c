@@ -83,7 +83,7 @@ static const m_option_t radioopts_conf[]={
     {"achannels", &stream_radio_defaults.achannels, CONF_TYPE_INT, CONF_MIN, 0 ,0, NULL},
     {NULL, NULL, 0, 0, 0, 0, NULL}
 };
-#endif /* CONFIG_RADIO */
+#endif /* HAVE_RADIO */
 
 #if HAVE_TV
 static const m_option_t tvopts_conf[]={
@@ -125,13 +125,13 @@ static const m_option_t tvopts_conf[]={
     {"quality", &stream_tv_defaults.quality, CONF_TYPE_INT, CONF_RANGE, 0, 100, NULL},
 #if HAVE_ALSA
     {"alsa", &stream_tv_defaults.alsa, CONF_TYPE_FLAG, 0, 0, 1, NULL},
-#endif /* CONFIG_ALSA */
+#endif /* HAVE_ALSA */
 #endif /* defined(CONFIG_TV_V4L2) */
     {"adevice", &stream_tv_defaults.adevice, CONF_TYPE_STRING, 0, 0, 0, NULL},
     {"audioid", &stream_tv_defaults.audio_id, CONF_TYPE_INT, CONF_RANGE, 0, 9, NULL},
     {NULL, NULL, 0, 0, 0, 0, NULL}
 };
-#endif /* CONFIG_TV */
+#endif /* HAVE_TV */
 
 extern int pvr_param_aspect_ratio;
 extern int pvr_param_sample_rate;
@@ -156,7 +156,7 @@ static const m_option_t pvropts_conf[]={
     {"fmt", &pvr_param_stream_type, CONF_TYPE_STRING, 0, 0, 0, NULL},
     {NULL, NULL, 0, 0, 0, 0, NULL}
 };
-#endif /* CONFIG_PVR */
+#endif /* HAVE_PVR */
 
 extern const m_option_t dvbin_opts_conf[];
 extern const m_option_t lavfdopts_conf[];
@@ -371,14 +371,14 @@ const m_option_t mp_opts[] = {
     {"dvd-device", &dvd_device,  CONF_TYPE_STRING, 0, 0, 0, NULL},
     {"dvd-speed", &dvd_speed, CONF_TYPE_INT, 0, 0, 0, NULL},
     {"dvdangle", &dvd_angle, CONF_TYPE_INT, CONF_RANGE, 1, 99, NULL},
-#endif /* CONFIG_DVDREAD */
+#endif /* HAVE_DVDREAD */
     OPT_INTPAIR("chapter", chapterrange, 0),
     OPT_CHOICE_OR_INT("edition", edition_id, 0, 0, 8190,
                       ({"auto", -1})),
 #if HAVE_LIBBLURAY
     {"bluray-device",  &bluray_device,  CONF_TYPE_STRING, 0,          0,  0, NULL},
     {"bluray-angle",   &bluray_angle,   CONF_TYPE_INT,    CONF_RANGE, 0, 999, NULL},
-#endif /* CONFIG_LIBBLURAY */
+#endif /* HAVE_LIBBLURAY */
 
     {"http-header-fields", &network_http_header_fields, CONF_TYPE_STRING_LIST, 0, 0, 0, NULL},
     {"user-agent", &network_useragent, CONF_TYPE_STRING, 0, 0, 0, NULL},
@@ -440,13 +440,13 @@ const m_option_t mp_opts[] = {
     {"mf", (void *) mfopts_conf, CONF_TYPE_SUBCONFIG, 0,0,0, NULL},
 #if HAVE_RADIO
     {"radio", (void *) radioopts_conf, CONF_TYPE_SUBCONFIG, 0, 0, 0, NULL},
-#endif /* CONFIG_RADIO */
+#endif /* HAVE_RADIO */
 #if HAVE_TV
     {"tv", (void *) tvopts_conf, CONF_TYPE_SUBCONFIG, 0, 0, 0, NULL},
-#endif /* CONFIG_TV */
+#endif /* HAVE_TV */
 #if HAVE_PVR
     {"pvr", (void *) pvropts_conf, CONF_TYPE_SUBCONFIG, 0, 0, 0, NULL},
-#endif /* CONFIG_PVR */
+#endif /* HAVE_PVR */
 #if HAVE_DVBIN
     {"dvbin", (void *) dvbin_opts_conf, CONF_TYPE_SUBCONFIG, 0, 0, 0, NULL},
 #endif
@@ -726,7 +726,7 @@ const m_option_t mp_opts[] = {
     OPT_FLAG("mouse-movements", vo.enable_mouse_movements, CONF_GLOBAL),
 #if HAVE_TV
     {"tvscan", (void *) tvscan_conf, CONF_TYPE_SUBCONFIG, 0, 0, 0, NULL},
-#endif /* CONFIG_TV */
+#endif /* HAVE_TV */
 
     {"screenshot", (void *) screenshot_conf, CONF_TYPE_SUBCONFIG},
 
