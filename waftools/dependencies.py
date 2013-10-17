@@ -85,15 +85,16 @@ class Dependency(object):
 def check_dependency(ctx, dependency):
     Dependency(ctx, ctx.env.satisfied_deps, dependency).check()
 
-def configure(ctx):
-    ctx.env['satisfied_deps'] = set()
 
-@conf
-def detect_target_os_dependency(ctx):
+def __detect_target_os_dependency__(ctx):
     target = "os_{0}".format(ctx.env.DEST_OS)
     ctx.start_msg('Detected target OS:')
     ctx.end_msg(target)
     ctx.env.satisfied_deps.add(target)
+
+def configure(ctx):
+    ctx.env['satisfied_deps'] = set()
+    __detect_target_os_dependency__(ctx)
 
 @conf
 def parse_dependencies(ctx, dependencies):

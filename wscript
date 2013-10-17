@@ -334,7 +334,6 @@ def configure(ctx):
     ctx.load('waf_customizations')
     ctx.load('cpudetect')
     ctx.load('dependencies')
-    ctx.detect_target_os_dependency()
 
     ctx.env.CFLAGS += ["-std=c99", "-Wall", "-Wno-switch", "-Wpointer-arith",
                        "-Wundef", "-Wno-pointer-sign", "-Wmissing-prototypes",
