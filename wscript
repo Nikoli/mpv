@@ -358,25 +358,7 @@ def configure(ctx):
     from sys import argv
     ctx.define("CONFIGURATION", " ".join(argv))
 
-    ctx.start_msg("Writing configuration header:")
-    ctx.write_config_header('config.h')
-    ctx.end_msg("config.h", "PINK")
-
-    ctx.start_msg("Writing header:")
-    import subprocess
-    process = subprocess.Popen("./version.sh --print",
-                               stdout=subprocess.PIPE,
-                               stderr=subprocess.PIPE,
-                               cwd=ctx.srcnode.abspath(), shell=True)
-    process.wait()
-    (version, err) = process.communicate()
-    import time
-    today = time.strftime("%a %b %d %H:%M:%S %Z %Y", time.gmtime())
-
-    ctx.define("VERSION", version.strip())
-    ctx.define("BUILDDATE", today)
-    ctx.write_config_header("version.h")
-    ctx.end_msg("version.h", "PINK")
+    ctx.load('headers')
 
 def build(ctx):
     includes = [ctx.bldnode.abspath(), ctx.srcnode.abspath()] + \
