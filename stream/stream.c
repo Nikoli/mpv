@@ -80,34 +80,34 @@ extern const stream_info_t stream_info_rar_filter;
 extern const stream_info_t stream_info_rar_entry;
 
 static const stream_info_t *const stream_list[] = {
-#ifdef CONFIG_VCD
+#if HAVE_VCD
     &stream_info_vcd,
 #endif
-#ifdef CONFIG_CDDA
+#if HAVE_CDDA
     &stream_info_cdda,
 #endif
     &stream_info_ffmpeg,
     &stream_info_avdevice,
-#ifdef CONFIG_DVBIN
+#if HAVE_DVBIN
     &stream_info_dvb,
 #endif
-#ifdef CONFIG_TV
+#if HAVE_TV
     &stream_info_tv,
 #endif
-#ifdef CONFIG_RADIO
+#if HAVE_RADIO
     &stream_info_radio,
 #endif
-#ifdef CONFIG_PVR
+#if HAVE_PVR
     &stream_info_pvr,
 #endif
-#ifdef CONFIG_LIBSMBCLIENT
+#if HAVE_LIBSMBCLIENT
     &stream_info_smb,
 #endif
-#ifdef CONFIG_DVDREAD
+#if HAVE_DVDREAD
     &stream_info_ifo,
     &stream_info_dvd,
 #endif
-#ifdef CONFIG_LIBBLURAY
+#if HAVE_LIBBLURAY
     &stream_info_bluray,
 #endif
 

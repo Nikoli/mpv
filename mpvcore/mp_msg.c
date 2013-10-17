@@ -30,7 +30,7 @@
 #include "osdep/getch2.h"
 #include "osdep/io.h"
 
-#ifdef CONFIG_GETTEXT
+#if HAVE_GETTEXT
 #include <locale.h>
 #include <libintl.h>
 #endif
@@ -122,7 +122,7 @@ static void mp_msg_do_init(void){
     for(i=0;i<MSGT_MAX;i++) mp_msg_levels[i] = -2;
     mp_msg_cancolor = isatty(fileno(stdout));
     mp_msg_levels[MSGT_IDENTIFY] = -1; // no -identify output by default
-#ifdef CONFIG_GETTEXT
+#if HAVE_GETTEXT
     textdomain("mpv");
     char *localedir = getenv("MPV_LOCALEDIR");
     if (localedir == NULL && strlen(MPLAYER_LOCALEDIR))
@@ -271,7 +271,7 @@ void mp_msg(int mod, int lev, const char *format, ...)
 
 char *mp_gtext(const char *string)
 {
-#ifdef CONFIG_GETTEXT
+#if HAVE_GETTEXT
     /* gettext expects the global locale to be set with
      * setlocale(LC_ALL, ""). However doing that would suck for a
      * couple of reasons (locale stuff is badly designed and sucks in

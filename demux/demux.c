@@ -70,7 +70,7 @@ const demuxer_desc_t *const demuxer_list[] = {
     &demuxer_desc_cue,
     &demuxer_desc_rawaudio,
     &demuxer_desc_rawvideo,
-#ifdef CONFIG_TV
+#if HAVE_TV
     &demuxer_desc_tv,
 #endif
 #if HAVE_LIBASS
@@ -79,7 +79,7 @@ const demuxer_desc_t *const demuxer_list[] = {
     &demuxer_desc_matroska,
     &demuxer_desc_lavf,
     &demuxer_desc_mf,
-#ifdef CONFIG_MNG
+#if HAVE_MNG
     &demuxer_desc_mng,
 #endif
     &demuxer_desc_playlist,

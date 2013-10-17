@@ -33,11 +33,11 @@
 #include <libavformat/avformat.h>
 #include <libswscale/swscale.h>
 
-#ifdef CONFIG_LIBAVDEVICE
+#if HAVE_LIBAVDEVICE
 #include <libavdevice/avdevice.h>
 #endif
 
-#ifdef CONFIG_LIBAVFILTER
+#if HAVE_LIBAVFILTER
 #include <libavfilter/avfilter.h>
 #endif
 
@@ -131,10 +131,10 @@ void init_libav(void)
     av_register_all();
     avformat_network_init();
 
-#ifdef CONFIG_LIBAVFILTER
+#if HAVE_LIBAVFILTER
     avfilter_register_all();
 #endif
-#ifdef CONFIG_LIBAVDEVICE
+#if HAVE_LIBAVDEVICE
     avdevice_register_all();
 #endif
 }

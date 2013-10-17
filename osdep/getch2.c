@@ -31,7 +31,7 @@
 #include <stdint.h>
 #include <string.h>
 #include <signal.h>
-#ifdef CONFIG_IOCTL
+#if HAVE_IOCTL
 #include <sys/ioctl.h>
 #endif
 
@@ -333,7 +333,7 @@ int load_termcap(char *termtype){
 }
 
 void get_screen_size(void) {
-#ifdef CONFIG_IOCTL
+#if HAVE_IOCTL
     struct winsize ws;
     if (ioctl(0, TIOCGWINSZ, &ws) < 0 || !ws.ws_row || !ws.ws_col)
         return;

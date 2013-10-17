@@ -84,11 +84,11 @@
 #include "sub/sub.h"
 #include "mpvcore/cpudetect.h"
 
-#ifdef CONFIG_X11
+#if HAVE_X11
 #include "video/out/x11_common.h"
 #endif
 
-#ifdef CONFIG_COCOA
+#if HAVE_COCOA
 #include "osdep/macosx_application.h"
 #endif
 
@@ -106,7 +106,7 @@
 
 #include "stream/tv.h"
 #include "stream/stream_radio.h"
-#ifdef CONFIG_DVBIN
+#if HAVE_DVBIN
 #include "stream/dvbin.h"
 #endif
 
@@ -544,14 +544,14 @@ static MP_NORETURN void exit_player(struct MPContext *mpctx,
     int rc;
     uninit_player(mpctx, INITIALIZED_ALL);
 
-#ifdef CONFIG_ENCODING
+#if HAVE_ENCODING
     encode_lavc_finish(mpctx->encode_lavc_ctx);
     encode_lavc_free(mpctx->encode_lavc_ctx);
 #endif
 
     mpctx->encode_lavc_ctx = NULL;
 
-#ifdef CONFIG_LUA
+#if HAVE_LUA
     mp_lua_uninit(mpctx);
 #endif
 
@@ -559,7 +559,7 @@ static MP_NORETURN void exit_player(struct MPContext *mpctx,
     timeEndPeriod(1);
 #endif
 
-#ifdef CONFIG_COCOA
+#if HAVE_COCOA
     cocoa_set_input_context(NULL);
 #endif
 
@@ -614,7 +614,7 @@ static MP_NORETURN void exit_player(struct MPContext *mpctx,
     mp_msg_uninit(mpctx->global);
     talloc_free(mpctx);
 
-#ifdef CONFIG_COCOA
+#if HAVE_COCOA
     terminate_cocoa_application();
     // never reach here:
     // terminate calls exit itself, just silence compiler warning
@@ -799,11 +799,11 @@ static char *get_playback_resume_config_filename(const char *fname,
             goto exit;
         realpath = mp_path_join(tmp, bstr0(cwd), bstr0(fname));
     }
-#ifdef CONFIG_DVDREAD
+#if HAVE_DVDREAD
     if (bstr_startswith0(bfname, "dvd://"))
         realpath = talloc_asprintf(tmp, "%s - %s", realpath, dvd_device);
 #endif
-#ifdef CONFIG_LIBBLURAY
+#if HAVE_LIBBLURAY
     if (bstr_startswith0(bfname, "br://") || bstr_startswith0(bfname, "bd://") ||
         bstr_startswith0(bfname, "bluray://"))
         realpath = talloc_asprintf(tmp, "%s - %s", realpath, bluray_device);
@@ -1052,7 +1052,7 @@ static void add_demuxer_tracks(struct MPContext *mpctx, struct demuxer *demuxer)
 
 static void add_dvd_tracks(struct MPContext *mpctx)
 {
-#ifdef CONFIG_DVDREAD
+#if HAVE_DVDREAD
     struct demuxer *demuxer = mpctx->demuxer;
     struct stream *stream = demuxer->stream;
     struct stream_dvd_info_req info;
@@ -1215,7 +1215,7 @@ static void print_status(struct MPContext *mpctx)
             saddf(&line, " ct:%7.3f", mpctx->total_avsync_change);
     }
 
-#ifdef CONFIG_ENCODING
+#if HAVE_ENCODING
     double position = get_current_pos_ratio(mpctx, true);
     char lavcbuf[80];
     if (encode_lavc_getstatus(mpctx->encode_lavc_ctx, lavcbuf, sizeof(lavcbuf),
@@ -1916,7 +1916,7 @@ static double timing_sleep(struct MPContext *mpctx, double time_frame)
 static void set_dvdsub_fake_extradata(struct dec_sub *dec_sub, struct stream *st,
                                       int width, int height)
 {
-#ifdef CONFIG_DVDREAD
+#if HAVE_DVDREAD
     if (!st)
         return;
 
@@ -2340,7 +2340,7 @@ static int fill_audio_out_buffers(struct MPContext *mpctx, double endpts)
 
 static void update_fps(struct MPContext *mpctx)
 {
-#ifdef CONFIG_ENCODING
+#if HAVE_ENCODING
     struct sh_video *sh_video = mpctx->sh_video;
     if (mpctx->encode_lavc_ctx && sh_video)
         encode_lavc_set_video_fps(mpctx->encode_lavc_ctx, sh_video->fps);
@@ -2905,7 +2905,7 @@ static void seek_reset(struct MPContext *mpctx, bool reset_ao, bool reset_ac)
     mpctx->dropped_frames = 0;
     mpctx->playback_pts = MP_NOPTS_VALUE;
 
-#ifdef CONFIG_ENCODING
+#if HAVE_ENCODING
     encode_lavc_discontinuity(mpctx->encode_lavc_ctx);
 #endif
 }
@@ -3623,7 +3623,7 @@ static void run_playloop(struct MPContext *mpctx)
     bool was_restart = mpctx->restart_playback;
     bool new_frame_shown = false;
 
-#ifdef CONFIG_ENCODING
+#if HAVE_ENCODING
     if (encode_lavc_didfail(mpctx->encode_lavc_ctx)) {
         mpctx->stop_play = PT_QUIT;
         return;
@@ -4070,7 +4070,7 @@ static void init_input(struct MPContext *mpctx)
     // Set the libstream interrupt callback
     stream_set_interrupt_callback(mp_input_check_interrupt, mpctx->input);
 
-#ifdef CONFIG_COCOA
+#if HAVE_COCOA
     cocoa_set_input_context(mpctx->input);
 #endif
 }
@@ -4371,7 +4371,7 @@ static void play_current_file(struct MPContext *mpctx)
     if (!mpctx->filename)
         goto terminate_playback;
 
-#ifdef CONFIG_ENCODING
+#if HAVE_ENCODING
     encode_lavc_discontinuity(mpctx->encode_lavc_ctx);
 #endif
 
@@ -4470,7 +4470,7 @@ static void play_current_file(struct MPContext *mpctx)
 
     stream_set_capture_file(mpctx->stream, opts->stream_capture);
 
-#ifdef CONFIG_DVBIN
+#if HAVE_DVBIN
 goto_reopen_demuxer: ;
 #endif
 
@@ -4554,7 +4554,7 @@ goto_reopen_demuxer: ;
 
     preselect_demux_streams(mpctx);
 
-#ifdef CONFIG_ENCODING
+#if HAVE_ENCODING
     if (mpctx->encode_lavc_ctx && mpctx->current_track[STREAM_VIDEO])
         encode_lavc_expect_stream(mpctx->encode_lavc_ctx, AVMEDIA_TYPE_VIDEO);
     if (mpctx->encode_lavc_ctx && mpctx->current_track[STREAM_AUDIO])
@@ -4578,7 +4578,7 @@ goto_reopen_demuxer: ;
     if (!mpctx->sh_video && !mpctx->sh_audio) {
         mp_tmsg(MSGT_CPLAYER, MSGL_FATAL,
                 "No video or audio streams selected.\n");
-#ifdef CONFIG_DVBIN
+#if HAVE_DVBIN
         if (mpctx->stream->type == STREAMTYPE_DVB) {
             int dir;
             int v = mpctx->last_dvb_step;
@@ -4654,7 +4654,7 @@ goto_reopen_demuxer: ;
 
     mp_msg(MSGT_GLOBAL, MSGL_V, "EOF code: %d  \n", mpctx->stop_play);
 
-#ifdef CONFIG_DVBIN
+#if HAVE_DVBIN
     if (mpctx->dvbin_reopen) {
         mpctx->stop_play = 0;
         uninit_player(mpctx, INITIALIZED_ALL - (INITIALIZED_STREAM | INITIALIZED_GETCH2 | (opts->fixed_vo ? INITIALIZED_VO : 0)));
@@ -4847,7 +4847,7 @@ static bool handle_help_options(struct MPContext *mpctx)
         talloc_free(list);
         opt_exit = 1;
     }
-#ifdef CONFIG_X11
+#if HAVE_X11
     if (opts->vo.fstype_list && strcmp(opts->vo.fstype_list[0], "help") == 0) {
         fstype_help();
         mp_msg(MSGT_FIXME, MSGL_FIXME, "\n");
@@ -4865,7 +4865,7 @@ static bool handle_help_options(struct MPContext *mpctx)
         property_print_help();
         opt_exit = 1;
     }
-#ifdef CONFIG_ENCODING
+#if HAVE_ENCODING
     if (encode_lavc_showhelp(mpctx->opts))
         opt_exit = 1;
 #endif
@@ -4985,13 +4985,13 @@ static int mpv_main(int argc, char *argv[])
         exit_player(mpctx, EXIT_NONE);
     }
 
-#ifdef CONFIG_PRIORITY
+#if HAVE_PRIORITY
     set_priority();
 #endif
 
     init_input(mpctx);
 
-#ifdef CONFIG_ENCODING
+#if HAVE_ENCODING
     if (opts->encode_output.file && *opts->encode_output.file) {
         mpctx->encode_lavc_ctx = encode_lavc_init(&opts->encode_output);
         if(!mpctx->encode_lavc_ctx) {
@@ -5026,7 +5026,7 @@ static int mpv_main(int argc, char *argv[])
         mpctx->initialized_flags |= INITIALIZED_VO;
     }
 
-#ifdef CONFIG_LUA
+#if HAVE_LUA
     // Lua user scripts can call arbitrary functions. Load them at a point
     // where this is safe.
     mp_lua_init(mpctx);
@@ -5048,7 +5048,7 @@ static int mpv_main(int argc, char *argv[])
 
 int main(int argc, char *argv[])
 {
-#ifdef CONFIG_COCOA
+#if HAVE_COCOA
     return cocoa_main(mpv_main, argc, argv);
 #else
     return mpv_main(argc, argv);
