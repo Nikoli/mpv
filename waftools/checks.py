@@ -76,6 +76,8 @@ def check_headers(*headers):
     return fn
 
 def check_true(ctx, dependency_identifier):
+    defkey = DependencyInflector(dependency_identifier).define_key()
+    ctx.define(defkey, 1)
     return True
 
 def compose_checks(*checks):
