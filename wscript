@@ -317,13 +317,12 @@ def options(opt):
         help="directory for gettext locales [$PREFIX/share/locale]")
 
 def configure(ctx):
+    ctx.find_program('perl', var='BIN_PERL')
     ctx.find_program('cc', var='CC')
     ctx.load('compiler_c')
     ctx.load('waf_customizations')
     ctx.load('dependencies')
     ctx.detect_target_os_dependency()
-
-    ctx.find_program("perl", var="BIN_PERL")
 
     ctx.env.CFLAGS += ["-std=c99", "-Wall", "-Wno-switch", "-Wpointer-arith",
                        "-Wundef", "-Wno-pointer-sign", "-Wmissing-prototypes",
