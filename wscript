@@ -321,6 +321,7 @@ def configure(ctx):
     ctx.find_program('cc', var='CC')
     ctx.load('compiler_c')
     ctx.load('waf_customizations')
+    ctx.load('cpudetect')
     ctx.load('dependencies')
     ctx.detect_target_os_dependency()
 
