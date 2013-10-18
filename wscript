@@ -91,7 +91,7 @@ iconv support use --disable-iconv.",
         'func': check_statement('sys/shm.h',
             'shmget(0, 0, 0); shmat(0, 0, 0); shmctl(0, 0, 0)')
     }, {
-        'name': 'select',
+        'name': 'posix_select',
         'desc': 'POSIX select()',
         'func': check_statement('sys/select.h', """
             int rc;
@@ -259,7 +259,7 @@ audio_output_features = [
     {
         'name': 'audio_select',
         'desc': 'audio select()',
-        'deps': [ 'select' ],
+        'deps': [ 'posix_select' ],
         'func': check_true,
     }, {
         'name': 'portaudio',
