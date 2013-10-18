@@ -18,3 +18,12 @@ def get_config_header(self, defines=True, headers=False, define_prefix=''):
             lst.append('#define %s %s' % (define_prefix + x, val))
 
     return "\n".join(lst)
+
+from waflib import TaskGen
+
+@TaskGen.extension('.m')
+def m_hook(self, node):
+    """
+    Makes waf call the c compiler for objective-c files
+    """
+    return self.create_compiled_task('c', node)

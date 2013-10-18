@@ -3,7 +3,7 @@ from checks import *
 __all__ = ["check_pthreads", "check_pthreads_w32_static", "check_iconv",
 "check_libsmbclient"]
 
-pthreads_program = load_fragment('pthreads')
+pthreads_program = load_fragment('pthreads.c')
 
 def check_pthreads(ctx, dependency_identifier):
     platform_cflags = {
@@ -25,7 +25,7 @@ def check_pthreads_w32_static(ctx, dependency_identifier):
     return check_libs(libs, checkfn)(ctx, dependency_identifier)
 
 def check_iconv(ctx, dependency_identifier):
-    iconv_program = load_fragment('iconv')
+    iconv_program = load_fragment('iconv.c')
     libdliconv = " ".join(ctx.env.LIB_LIBDL + ['iconv'])
     libs       = ['iconv', libdliconv]
     checkfn = check_cc(fragment=iconv_program)

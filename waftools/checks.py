@@ -97,7 +97,7 @@ def compose_checks(*checks):
 
 def load_fragment(fragment):
     file_path = os.path.join(os.path.dirname(__file__), 'fragments',
-                             fragment + '.c')
+                             fragment)
     fp = open(file_path,"r")
     fragment_code = fp.read()
     fp.close()

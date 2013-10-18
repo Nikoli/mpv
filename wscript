@@ -9,7 +9,7 @@ main_dependencies = [
     {
         'name': 'ebx_available',
         'desc': 'ebx availability',
-        'func': check_cc(fragment=load_fragment('ebx'))
+        'func': check_cc(fragment=load_fragment('ebx.c'))
     } , {
         'name': 'libm',
         'desc': '-lm',
@@ -232,7 +232,7 @@ Libav libraries ({0}). Aborting.".format(" ".join(libav_pkg_config_checks))
         'desc': 'libavfilter',
         'func': compose_checks(
             check_pkg_config('libavfilter'),
-            check_cc(fragment=load_fragment('libavfilter'),
+            check_cc(fragment=load_fragment('libavfilter.c'),
                      use='libavfilter')),
     }, {
         'name': '--vf-lavfi',
@@ -276,6 +276,14 @@ audio_output_features = [
 
 video_output_features = [
     {
+        'name': 'cocoa',
+        'desc': 'Cocoa',
+        'deps': [ 'os_darwin' ],
+        'func': check_cc(
+            fragment=load_fragment('cocoa.m'),
+            compile_filename='test.m',
+            framework_name=['Cocoa', 'IOKit', 'OpenGL'])
+    } , {
         'name': 'vdpau',
         'desc': 'VDPAU acceleration',
         'deps': [ 'os_linux', 'x11' ],
@@ -638,6 +646,10 @@ def build(ctx):
         ( "video/filter/vf_yadif.c" ),
         ( "video/out/aspect.c" ),
         ( "video/out/bitmap_packer.c" ),
+        ( "video/out/cocoa/additions.m",         "cocoa" ),
+        ( "video/out/cocoa/view.m",              "cocoa" ),
+        ( "video/out/cocoa/window.m",            "cocoa" ),
+        ( "video/out/cocoa_common.m",            "cocoa" ),
         ( "video/out/dither.c" ),
         ( "video/out/filter_kernels.c" ),
         ( "video/out/gl_cocoa.c",                "gl_cocoa" ),
@@ -689,7 +701,12 @@ def build(ctx):
         "osdep/io.c",
         "osdep/numcores.c",
         "osdep/timer.c",
-        timer_c
+        timer_c,
+
+        ( "osdep/ar/HIDRemote.m",                "cocoa" ),
+        ( "osdep/macosx_application.m",          "cocoa" ),
+        ( "osdep/macosx_events.m",               "cocoa" ),
+        ( "osdep/path-macosx.m",                 "cocoa" ),
     ]
 
     ctx.objects(
@@ -719,7 +736,8 @@ def build(ctx):
             "osdep",
             "tree_allocator",
         ],
-        lib      = ctx.dependencies_lib(),
-        libpath  = ctx.dependencies_libpath(),
-        features = "c cprogram"
+        lib       = ctx.dependencies_lib(),
+        libpath   = ctx.dependencies_libpath(),
+        framework = ctx.dependencies_framework(),
+        features  = "c cprogram"
     )

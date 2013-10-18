@@ -128,6 +128,7 @@ def env_fetch(tx):
     return fn
 
 BuildContext.filtered_sources = filtered_sources
-BuildContext.dependencies_includes = env_fetch(lambda x: "INCLUDES_{0}".format(x))
-BuildContext.dependencies_lib      = env_fetch(lambda x: "LIB_{0}".format(x))
-BuildContext.dependencies_libpath  = env_fetch(lambda x: "LIBPATH_{0}".format(x))
+BuildContext.dependencies_includes  = env_fetch(lambda x: "INCLUDES_{0}".format(x))
+BuildContext.dependencies_lib       = env_fetch(lambda x: "LIB_{0}".format(x))
+BuildContext.dependencies_libpath   = env_fetch(lambda x: "LIBPATH_{0}".format(x))
+BuildContext.dependencies_framework = env_fetch(lambda x: "FRAMEWORK_{0}".format(x))
