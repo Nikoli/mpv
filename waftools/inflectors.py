@@ -21,6 +21,6 @@ class DependencyInflector(object):
         Convert any "CamelCased" or "ordinary Word" into an
         "underscored_word"."""
 
-        return  re.sub('[^A-Z^a-z^0-9^\/]+', '_', \
+        return  re.sub('[^A-Z^a-z^0-9]+', '_', \
                 re.sub('([a-z\d])([A-Z])', '\\1_\\2', \
                 re.sub('([A-Z]+)([A-Z][a-z])', '\\1_\\2', re.sub('::', '/', word)))).lower()
