@@ -67,7 +67,7 @@ def check_pkg_config(*args, **kw_ext):
 
 def check_headers(*headers):
     def undef_others(ctx, headers, found):
-        not_found_hs = set(headers) - set(found)
+        not_found_hs = set(headers) - set([found])
         for not_found_h in not_found_hs:
             defkey = DependencyInflector(not_found_h).define_key()
             ctx.undefine(defkey)
