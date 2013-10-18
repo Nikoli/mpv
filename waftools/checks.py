@@ -78,6 +78,8 @@ def check_headers(*headers):
             options  = __merge_options__(dependency_identifier, defaults)
             if ctx.check(**options):
                 undef_others(ctx, headers, header)
+                defkey = DependencyInflector(dependency_identifier).define_key()
+                ctx.define(defkey, 1)
                 return True
         undef_others(ctx, headers, None)
         return False
