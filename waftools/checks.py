@@ -66,12 +66,20 @@ def check_pkg_config(*args, **kw_ext):
     return fn
 
 def check_headers(*headers):
+    def undef_others(ctx, headers, found):
+        not_found_hs = set(headers) - set(found)
+        for not_found_h in not_found_hs:
+            defkey = DependencyInflector(not_found_h).define_key()
+            ctx.undefine(defkey)
+
     def fn(ctx, dependency_identifier):
         for header in headers:
             defaults = {'header_name': header, 'features': 'c cprogram'}
             options  = __merge_options__(dependency_identifier, defaults)
             if ctx.check(**options):
+                undef_others(ctx, headers, header)
                 return True
+        undef_others(ctx, headers, None)
         return False
     return fn
 
