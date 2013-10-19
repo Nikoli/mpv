@@ -257,27 +257,71 @@ Libav libraries ({0}). Aborting.".format(" ".join(libav_pkg_config_checks))
 
 audio_output_features = [
     {
+        'name': 'sdl2',
+        'desc': 'SDL2',
+        'func': check_pkg_config('sdl2')
+    }, {
+        'name': 'sdl',
+        'desc': 'SDL (1.x)',
+        'deps_neg': [ 'sdl2' ],
+        'func': check_pkg_config('sdl')
+    }, {
+        'name': 'oss_audio',
+        'desc': 'OSS audio output',
+        'func': check_stub
+    }, {
         'name': 'audio_select',
         'desc': 'audio select()',
-        'deps': [ 'posix_select' ],
+        'deps': [ 'posix_select', 'oss_audio' ],
         'func': check_true,
+    }, {
+        'name': 'rsound',
+        'desc': 'RSound audio output',
+        'func': check_statement('rsound.h', 'rsd_init(NULL)', lib='rsound')
+    }, {
+        'name': 'sndio',
+        'desc': 'sndio audio input/output',
+        'func': check_statement('sndio.h',
+            'struct sio_par par; sio_initpar(&par)', lib='sndio')
+    }, {
+        'name': 'pulse',
+        'desc': 'PulseAudio audio output',
+        'func': check_pkg_config('libpulse', '>= 0.9')
     }, {
         'name': 'portaudio',
         'desc': 'PortAudio audio output',
         'deps': [ 'pthreads' ],
         'func': check_pkg_config('portaudio-2.0', '>= 19'),
     }, {
+        'name': 'jack',
+        'desc': 'JACK audio output',
+        'func': check_pkg_config('jack'),
+    }, {
         'name': 'openal',
         'desc': 'OpenAL audio output',
         'func': check_pkg_config('openal', '>= 1.13'),
         'default': 'disable'
     }, {
+        'name': 'alsa',
+        'desc': 'ALSA audio output',
+        'func': check_pkg_config('alsa'),
+    }, {
         'name': 'coreaudio',
-        'desc': 'CoreAudio',
+        'desc': 'CoreAudio audio output',
         'deps': [ 'os_darwin' ],
         'func': check_cc(
             fragment=load_fragment('coreaudio.c'),
             framework_name=['CoreAudio', 'AudioUnit', 'AudioToolbox'])
+    }, {
+        'name': 'dsound',
+        'desc': 'DirectSound audio output',
+        'deps': [ 'os_win32' ],
+        'func': check_cc(header_name='dsound.h'),
+    }, {
+        'name': 'wasapi',
+        'desc': 'WASAPI audio output',
+        'deps': [ 'os_win32' ],
+        'func': check_cc(fragment=load_fragment('wasapi.c'), lib='ole32'),
     }
 ]
 
@@ -290,6 +334,48 @@ video_output_features = [
             fragment=load_fragment('cocoa.m'),
             compile_filename='test.m',
             framework_name=['Cocoa', 'IOKit', 'OpenGL'])
+    } , {
+        'name': 'wayland',
+        'desc': 'Wayland',
+        'deps': [ 'os_linux' ],
+        'func': check_pkg_config('wayland-client', '>= 1.2.0',
+                                 'wayland-cursor', '>= 1.2.0',
+                                 'xkbcommon',      '>= 0.3.0'),
+    } , {
+        'name': 'x11',
+        'desc': 'X11',
+        'func': check_pkg_config('x11'),
+    } , {
+        'name': 'xss',
+        'desc': 'Xss screensaver extensions',
+        'deps': [ 'x11' ],
+        'func': check_statement('X11/extensions/scrnsaver.h',
+            'XScreenSaverSuspend(NULL, True)', use='x11', lib='Xss'),
+    } , {
+        'name': 'xext',
+        'desc': 'X extensions',
+        'deps': [ 'x11' ],
+        'func': check_pkg_config('xext'),
+    } , {
+        'name': 'xv',
+        'desc': 'Xv',
+        'deps': [ 'x11' ],
+        'func': check_pkg_config('xv'),
+    } , {
+        'name': 'xinerama',
+        'desc': 'Xinerama',
+        'deps': [ 'x11' ],
+        'func': check_pkg_config('xinerama'),
+    }, {
+        'name': 'xf86vm',
+        'desc': 'Xxf86vm',
+        'deps': [ 'x11' ],
+        'func': check_stub
+    } , {
+        'name': 'xf86xk',
+        'desc': 'XF86keysym',
+        'deps': [ 'x11' ],
+        'func': check_stub
     } , {
         'name': 'gl_cocoa',
         'desc': 'OpenGL Cocoa Backend',
@@ -326,8 +412,37 @@ video_output_features = [
     }, {
         'name': 'vda',
         'desc': 'VDA acceleration',
-        'deps': [ 'os_darwin', 'cocoa' ],
-        'func': check_pkg_config('asd'),
+        'deps': [ 'corevideo' ],
+        'func': check_stub,
+    }, {
+        'name': 'caca',
+        'desc': 'CACA',
+        'func': check_pkg_config('caca', '>= 0.99.beta18'),
+    }, {
+        'name': 'dvb',
+        'desc': 'DVB',
+        'deps': [ 'os_linux' ],
+        'func': check_stub,
+    } , {
+        'name': 'dvbin',
+        'desc': 'DVB input module',
+        'deps': [ 'dvb' ],
+        'func': check_true,
+    } , {
+        'name': 'mng',
+        'desc': 'MNG support',
+        # XXX: check this
+        'func': check_pkg_config('libmng'),
+    }, {
+        'name': 'jpeg',
+        'desc': 'JPEG support',
+        'func': check_cc(header_name=['stdio.h', 'jpeglib.h'],
+                         lib='jpeg', use='libm'),
+    }, {
+        'name': 'direct3d',
+        'desc': 'Direct3D support',
+        'deps': [ 'os_win32' ],
+        'func': check_cc(header_name='d3d9.h'),
     }
 ]
 
@@ -445,7 +560,7 @@ def build(ctx):
         ( "audio/out/ao_lavc.c",                 "encoding" ),
         ( "audio/out/ao_null.c" ),
         ( "audio/out/ao_openal.c",               "openal" ),
-        ( "audio/out/ao_oss.c",                  "oss" ),
+        ( "audio/out/ao_oss.c",                  "oss_audio" ),
         ( "audio/out/ao_pcm.c" ),
         ( "audio/out/ao_portaudio.c",            "portaudio" ),
         ( "audio/out/ao_pulse.c",                "pulseaudio" ),
@@ -553,7 +668,7 @@ def build(ctx):
 
     sources = [
         ( "stream/ai_alsa1x.c",                  "alsa" ),
-        ( "stream/ai_oss.c",                     "oss" ),
+        ( "stream/ai_oss.c",                     "oss_audio" ),
         ( "stream/ai_sndio.c",                   "sndio" ),
         ( "stream/audio_in.c",                   "audio_input" ),
         ( "stream/cache.c",                      "stream_cache"),
