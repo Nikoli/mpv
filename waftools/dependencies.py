@@ -18,6 +18,7 @@ class Dependency(object):
 
         try:
             self.check_disabled()
+            self.check_any_dependencies()
             self.check_dependencies()
             self.check_negative_dependencies()
         except DependencyError:
@@ -34,6 +35,13 @@ class Dependency(object):
         if not self.enabled_option():
             self.skip()
             raise DependencyError
+
+    def check_any_dependencies(self):
+        if 'deps_any' in self.attributes:
+            deps = set(self.attributes['deps_any'])
+            if len(deps & self.satisfied_deps) == 0:
+                self.skip("not found any of {0}".format(", ".join(deps)))
+                raise DependencyError
 
     def check_dependencies(self):
         if 'deps' in self.attributes:
