@@ -508,7 +508,7 @@ def configure(ctx):
                        "-Wno-logical-op-parentheses",
                        "-Werror=implicit-function-declaration",
                        # XXX: hax, please fix for gcc
-                       "-fcolor-diagnostics"
+                       # "-fcolor-diagnostics"
                        ]
 
     ctx.parse_dependencies(main_dependencies)
