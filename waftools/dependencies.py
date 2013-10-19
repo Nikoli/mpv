@@ -40,7 +40,7 @@ class Dependency(object):
             deps = set(self.attributes['deps'])
             if not deps <= self.satisfied_deps:
                 missing_deps = deps - self.satisfied_deps
-                self.fail("{0} not found".format(", ".join(missing_deps)))
+                self.skip("{0} not found".format(", ".join(missing_deps)))
                 raise DependencyError
 
     def check_negative_dependencies(self):
@@ -48,7 +48,7 @@ class Dependency(object):
             deps = set(self.attributes['deps_neg'])
             if deps <= self.satisfied_deps:
                 conflicting_deps = deps & self.satisfied_deps
-                self.skip("{0} found".format(", ".join(conflicting_deps)))
+                self.skip("{0} found".format(", ".join(conflicting_deps)), 'CYAN')
                 raise DependencyError
 
     def check_autodetect_func(self):
@@ -79,8 +79,8 @@ class Dependency(object):
         if self.attributes.get('req', False):
             raise ConfigurationError(self.attributes['fmsg'])
 
-    def skip(self, reason='disabled'):
-        self.ctx.end_msg(reason, 'YELLOW')
+    def skip(self, reason='disabled', color='YELLOW'):
+        self.ctx.end_msg(reason, color)
 
 def check_dependency(ctx, dependency):
     Dependency(ctx, ctx.env.satisfied_deps, dependency).check()
