@@ -337,7 +337,6 @@ video_output_features = [
     } , {
         'name': 'wayland',
         'desc': 'Wayland',
-        'deps': [ 'os_linux' ],
         'func': check_pkg_config('wayland-client', '>= 1.2.0',
                                  'wayland-cursor', '>= 1.2.0',
                                  'xkbcommon',      '>= 0.3.0'),
@@ -358,7 +357,7 @@ video_output_features = [
         'func': check_pkg_config('xext'),
     } , {
         'name': 'xv',
-        'desc': 'Xv',
+        'desc': 'Xv video output',
         'deps': [ 'x11' ],
         'func': check_pkg_config('xv'),
     } , {
@@ -382,8 +381,15 @@ video_output_features = [
         'deps': [ 'cocoa' ],
         'func': check_true
     } , {
+        'name': 'gl_x11',
+        'desc': 'OpenGL X11 Backend',
+        'deps': [ 'x11' ],
+        'func': check_libs(['GL', 'GL Xdamage'],
+                   check_cc(fragment=load_fragment('gl_x11.c'),
+                            use=['x11', 'libdl', 'pthreads']))
+    } , {
         'name': 'gl',
-        'desc': 'OpenGL Video Outputs',
+        'desc': 'OpenGL video outputs',
         'deps_any': [ 'gl_cocoa', 'gl_x11', 'gl_w32', 'gl_wayland' ],
         'func': check_true
     } , {
