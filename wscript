@@ -294,6 +294,13 @@ video_output_features = [
         'deps_any': [ 'gl_cocoa', 'gl_x11', 'gl_w32', 'gl_wayland' ],
         'func': check_true
     } , {
+        'name': 'corevideo',
+        'desc': 'CoreVideo',
+        'deps': [ 'opengl', 'gl_cocoa' ],
+        'func': check_statement('QuartzCore/CoreVideo.h',
+            'CVOpenGLTextureCacheCreate(0, 0, 0, 0, 0, 0)',
+            framework_name=['QuartzCore'])
+    } , {
         'name': 'vdpau',
         'desc': 'VDPAU acceleration',
         'deps': [ 'os_linux', 'x11' ],
