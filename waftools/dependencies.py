@@ -101,24 +101,27 @@ def parse_dependencies(ctx, dependencies):
     [check_dependency(ctx, dependency) for dependency in dependencies]
 
 def filtered_sources(ctx, sources):
-    def source_file(source):
+    def ___source_file___(source):
         if isinstance(source, tuple):
             return source[0]
         else:
             return source
 
-    def unpack_and_check_dependency(source):
+    def ___check_filter___(dependency):
+        if dependency.find('!') == 0:
+            return dependency.lstrip('!') not in ctx.env.satisfied_deps
+        else:
+            return dependency in ctx.env.satisfied_deps
+
+    def ___unpack_and_check_filter___(source):
         try:
             _, dependency = source
-            if set([dependency]) <= ctx.env.satisfied_deps:
-                return True
-            else:
-                return False
+            return ___check_filter___(dependency)
         except ValueError:
             return True
 
-    return [source_file(source) for source in sources \
-            if unpack_and_check_dependency(source)]
+    return [___source_file___(source) for source in sources \
+            if ___unpack_and_check_filter___(source)]
 
 def env_fetch(tx):
     def fn(ctx):
