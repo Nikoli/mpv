@@ -4,7 +4,7 @@ from inflectors import DependencyInflector
 __all__ = [
     "check_pkg_config", "check_cc", "check_statement", "check_libs",
     "check_headers", "compose_checks", "check_true", "any_version",
-    "load_fragment"]
+    "load_fragment", "check_stub"]
 
 any_version = None
 
@@ -89,6 +89,11 @@ def check_true(ctx, dependency_identifier):
     defkey = DependencyInflector(dependency_identifier).define_key()
     ctx.define(defkey, 1)
     return True
+
+def check_stub(ctx, dependency_identifier):
+    defkey = DependencyInflector(dependency_identifier).define_key()
+    ctx.undefine(defkey)
+    return False
 
 def compose_checks(*checks):
     def fn(ctx, dependency_identifier):
