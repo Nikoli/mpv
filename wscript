@@ -388,6 +388,16 @@ video_output_features = [
                    check_cc(fragment=load_fragment('gl_x11.c'),
                             use=['x11', 'libdl', 'pthreads']))
     } , {
+        'name': 'gl_wayland',
+        'desc': 'OpenGL Wayland Backend',
+        'deps': [ 'wayland' ],
+        'func': check_stub
+    } , {
+        'name': 'gl_win32',
+        'desc': 'OpenGL Win32 Backend',
+        'deps': [ 'os_win32' ],
+        'func': check_stub
+    } , {
         'name': 'gl',
         'desc': 'OpenGL video outputs',
         'deps_any': [ 'gl_cocoa', 'gl_x11', 'gl_w32', 'gl_wayland' ],
