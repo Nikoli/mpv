@@ -271,6 +271,13 @@ audio_output_features = [
         'desc': 'OpenAL audio output',
         'func': check_pkg_config('openal', '>= 1.13'),
         'default': 'disable'
+    }, {
+        'name': 'coreaudio',
+        'desc': 'CoreAudio',
+        'deps': [ 'os_darwin' ],
+        'func': check_cc(
+            fragment=load_fragment('coreaudio.c'),
+            framework_name=['CoreAudio', 'AudioUnit', 'AudioToolbox'])
     }
 ]
 
