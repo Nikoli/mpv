@@ -296,7 +296,7 @@ video_output_features = [
     } , {
         'name': 'corevideo',
         'desc': 'CoreVideo',
-        'deps': [ 'opengl', 'gl_cocoa' ],
+        'deps': [ 'gl', 'gl_cocoa' ],
         'func': check_statement('QuartzCore/CoreVideo.h',
             'CVOpenGLTextureCacheCreate(0, 0, 0, 0, 0, 0)',
             framework_name=['QuartzCore'])
