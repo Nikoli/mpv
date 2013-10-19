@@ -62,7 +62,12 @@ def check_pkg_config(*args, **kw_ext):
             'package': " ".join(packages),
             'args': sargs + ["--libs", "--cflags"] }
         opts = __merge_options__(dependency_identifier, defaults, kw_ext, kw)
-        return ctx.check_cfg(**opts)
+        if ctx.check_cfg(**opts):
+            return True
+        else:
+            defkey = DependencyInflector(dependency_identifier).define_key()
+            ctx.undefine(defkey)
+            return False
     return fn
 
 def check_headers(*headers):
