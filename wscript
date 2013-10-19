@@ -820,7 +820,7 @@ def build(ctx):
         ( "video/out/vo_vdpau.c",                "vdpau" ),
         ( "video/out/vo_wayland.c",              "wayland" ),
         ( "video/out/vo_x11.c" ,                 "x11" ),
-        ( "video/out/vo_xv.c",                   "xvideo" ),
+        ( "video/out/vo_xv.c",                   "xv" ),
         ( "video/out/w32_common.c",              "w32" ), ### XXX
         ( "video/out/wayland_common.c",          "wayland" ),
         ( "video/out/x11_common.c",              "x11" ),
