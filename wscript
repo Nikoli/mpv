@@ -604,7 +604,7 @@ def build(ctx):
         ( "video/vaapi.c",                       "vaapi" ),
         ( "video/vdpau.c",                       "vdpau" ),
         ( "video/decode/dec_video.c"),
-        ( "video/decode/lavc_dr1.c",             "!avutil_refcounting" ),
+        ( "video/decode/lavc_dr1.c",             "!avutil_refcounting" ), # XXX: handle ! in dependencies.py
         ( "video/decode/vaapi.c",                "vaapi" ),
         ( "video/decode/vd.c" ),
         ( "video/decode/vd_lavc.c" ),
