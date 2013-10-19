@@ -24,10 +24,11 @@ def __merge_options__(dependency_identifier, *args):
     return reduce(merge_dicts, args, initial_values)
 
 def check_libs(libs, function):
-    libs = [""] + libs
+    libs = [None] + libs
     def fn(ctx, dependency_identifier):
         for lib in libs:
-            if function(ctx, dependency_identifier, lib=lib):
+            kwargs = lib and {'lib': lib} or {}
+            if function(ctx, dependency_identifier, **kwargs):
                 return True
         return False
     return fn
