@@ -284,6 +284,16 @@ video_output_features = [
             compile_filename='test.m',
             framework_name=['Cocoa', 'IOKit', 'OpenGL'])
     } , {
+        'name': 'gl_cocoa',
+        'desc': 'OpenGL Cocoa Backend',
+        'deps': [ 'cocoa' ],
+        'func': check_true
+    } , {
+        'name': 'gl',
+        'desc': 'OpenGL Video Outputs',
+        'deps_any': [ 'gl_cocoa', 'gl_x11', 'gl_w32', 'gl_wayland' ],
+        'func': check_true
+    } , {
         'name': 'vdpau',
         'desc': 'VDPAU acceleration',
         'deps': [ 'os_linux', 'x11' ],
@@ -653,14 +663,14 @@ def build(ctx):
         ( "video/out/dither.c" ),
         ( "video/out/filter_kernels.c" ),
         ( "video/out/gl_cocoa.c",                "gl_cocoa" ),
-        ( "video/out/gl_common.c",               "opengl" ),
-        ( "video/out/gl_lcms.c",                 "lcms" ),
-        ( "video/out/gl_osd.c",                  "opengl" ),
-        ( "video/out/gl_video.c",                "opengl" ),
+        ( "video/out/gl_common.c",               "gl" ),
+        ( "video/out/gl_lcms.c",                 "gl" ),
+        ( "video/out/gl_osd.c",                  "gl" ),
+        ( "video/out/gl_video.c",                "gl" ),
         ( "video/out/gl_w32.c",                  "gl_w32" ),
         ( "video/out/gl_wayland.c",              "gl_wayland" ),
         ( "video/out/gl_x11.c",                  "gl_x11" ),
-        ( "video/out/pnm_loader.c",              "opengl" ),
+        ( "video/out/pnm_loader.c",              "gl" ),
         ( "video/out/vo.c" ),
         ( "video/out/vo_caca.c",                 "caca" ),
         ( "video/out/vo_corevideo.c",            "corevideo"),
@@ -668,8 +678,8 @@ def build(ctx):
         ( "video/out/vo_image.c" ),
         ( "video/out/vo_lavc.c",                 "encoding" ),
         ( "video/out/vo_null.c" ),
-        ( "video/out/vo_opengl.c",               "opengl" ),
-        ( "video/out/vo_opengl_old.c",           "opengl" ),
+        ( "video/out/vo_opengl.c",               "gl" ),
+        ( "video/out/vo_opengl_old.c",           "gl" ),
         ( "video/out/vo_sdl.c",                  "sdl2" ),
         ( "video/out/vo_vaapi.c",                "vaapi" ),
         ( "video/out/vo_vdpau.c",                "vdpau" ),
