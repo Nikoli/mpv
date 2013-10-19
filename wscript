@@ -23,6 +23,11 @@ main_dependencies = [
         'desc': 'dynamic loader',
         'func': check_libs(['dl'], check_statement('dlfcn.h', 'dlopen("", 0)'))
     }, {
+        'name': 'dlopen',
+        'desc': 'dlopen',
+        'deps_any': [ 'libdl', 'os_win32' ],
+        'func': check_true
+    }, {
         'name': '--pthreads',
         'desc': 'POSIX threads',
         'func': check_pthreads
