@@ -82,46 +82,45 @@ class Dependency(object):
     def skip(self, reason='disabled', color='YELLOW'):
         self.ctx.end_msg(reason, color)
 
-def check_dependency(ctx, dependency):
-    Dependency(ctx, ctx.env.satisfied_deps, dependency).check()
-
-
-def __detect_target_os_dependency__(ctx):
-    target = "os_{0}".format(ctx.env.DEST_OS)
-    ctx.start_msg('Detected target OS:')
-    ctx.end_msg(target)
-    ctx.env.satisfied_deps.add(target)
-
 def configure(ctx):
+    def __detect_target_os_dependency__(ctx):
+        target = "os_{0}".format(ctx.env.DEST_OS)
+        ctx.start_msg('Detected target OS:')
+        ctx.end_msg(target)
+        ctx.env.satisfied_deps.add(target)
+
     ctx.env['satisfied_deps'] = set()
     __detect_target_os_dependency__(ctx)
 
 @conf
 def parse_dependencies(ctx, dependencies):
-    [check_dependency(ctx, dependency) for dependency in dependencies]
+    def __check_dependency__(ctx, dependency):
+        Dependency(ctx, ctx.env.satisfied_deps, dependency).check()
+
+    [__check_dependency__(ctx, dependency) for dependency in dependencies]
 
 def filtered_sources(ctx, sources):
-    def ___source_file___(source):
+    def __source_file__(source):
         if isinstance(source, tuple):
             return source[0]
         else:
             return source
 
-    def ___check_filter___(dependency):
+    def __check_filter__(dependency):
         if dependency.find('!') == 0:
             return dependency.lstrip('!') not in ctx.env.satisfied_deps
         else:
             return dependency in ctx.env.satisfied_deps
 
-    def ___unpack_and_check_filter___(source):
+    def __unpack_and_check_filter__(source):
         try:
             _, dependency = source
-            return ___check_filter___(dependency)
+            return __check_filter__(dependency)
         except ValueError:
             return True
 
-    return [___source_file___(source) for source in sources \
-            if ___unpack_and_check_filter___(source)]
+    return [__source_file__(source) for source in sources \
+            if __unpack_and_check_filter__(source)]
 
 def env_fetch(tx):
     def fn(ctx):
